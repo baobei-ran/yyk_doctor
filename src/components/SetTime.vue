@@ -27,6 +27,7 @@
               @click="SetActive($event, item.date)"
               :data-time="item.time"
               data-type="1"
+              :key="$index+'_1'"
               :data-week="item.week"
               :data-date="item.date"
             ></td>
@@ -38,6 +39,7 @@
               @click="SetActive($event, item.date)"
               :data-time="item.time"
               data-type="2"
+              :key="$index+'_2'"
               :data-week="item.week"
               :data-date="item.date"
             ></td>
@@ -49,6 +51,7 @@
               @click="SetActive($event, item.date)"
               :data-time="item.time"
               data-type="3"
+              :key="$index+'_3'"
               :data-week="item.week"
               :data-date="item.date"
             ></td>

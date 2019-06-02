@@ -12,7 +12,7 @@
         【签约动作】当您按照注册页面提示填写信息、阅读并同意本协议且完成全部注册程序后，即表示您已充分阅读、理解并接受本协议的全部内容，并与云医康平台达成一致，成为妙云医康平台用户。您的注册行为将被认为是对本协议全部条款无保留的接受和遵守。阅读本协议的过程中，如果您不同意本协议或其中任何条款约定，您应立即停止注册程序。</p>
     </div>
     <div
-      v-for="(item,i) in ExplainData" :key='i'
+      v-for="(item,i) in ExplainData" :key='i+"_11"'
       class="Mg-B10 Agreement_list"
     >
       <p
@@ -20,16 +20,15 @@
       >{{item.title}}</p>
       <ul>
         <li
-          v-for="(list,i) in item.list" :key='i'
+          v-for="(list,i) in item.list" :key='i+"_22"'
         >
           <p
           class="text_indent"
           >{{list.name}}</p>
           <ul>
             <li
-              v-for="(child,i) in list.child" :key='i'
-            >
-              <p
+              v-for="(child,i) in list.child" :key='i+"_33"'>
+              <p 
                 class="text_indent2"
               >{{child}}</p>
             </li>

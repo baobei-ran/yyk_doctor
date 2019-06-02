@@ -44,22 +44,25 @@
       var that = this;
       this.$https.post("mobile/doch5/articledata", ResDate, function (response) {
             console.log(response);
+           if (response.status >= 200 && response.status < 300) {
+            console.log(response);
             //请求成功，response为成功信息参数
-            if (response.code == 1) {
+            if (response.data.code == 1) {
               that.Default=true;
-              that.Title = response.data.title;
-              that.Time = response.data.created_at;
-              that.Editer = response.data.editer;
-              that.Content = response.data.content;
+              that.Title = response.data.data.title;
+              that.Time = response.data.data.created_at;
+              that.Editer = response.data.data.editer;
+              that.Content = response.data.data.content;
               that.msg = '来源：'
-            } else if (response.code == 2) {
+            } else if (response.data.code == 2) {
               that.Default=false;
               that.$toast({
-                message: response.msg,
+                message: response.data.msg,
                 position: 'bottom',
                 duration: 5000
               });
             }
+          }
         })
     },
     filters: {

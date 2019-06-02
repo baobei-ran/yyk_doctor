@@ -245,11 +245,11 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
         var AllDays = 0;
         this.$https.post("mobile/doch5/get_time", {'did': this.$route.params.did}, function (res) {
             console.log(res)
-            
-              if (res.code == 1) {
+            if (res.status >= 200 && res.status < 300) {
+              if (res.data.code == 1) {
                 that.ResData = res.data;
-                that.Address=res.data.address;
-                // AllDays = res.alldays;
+                that.Address=res.data.data.address;
+                // AllDays = res.data.alldays;
                 
                 //获取日期
                 AllDays = 15;
@@ -270,7 +270,7 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
               } else  {
 
               }
-            
+            }            
           })
       },
       //提交表单
@@ -328,10 +328,10 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
          MessageBox.confirm('<p style="color:#333;">保存后患者可在你的主页上预约门诊<br/>是否确认保存设定？</p>', {title:'服务提示'}).then(action => {
            console.log(obj)
             this.$https.post("mobile/doch5/set_time", obj, function (res) {
-                
-                  if (res.code == 1) {
+                if (res.status >= 200 && res.status < 300) {
+                  if (res.data.code == 1) {
                     Toast({
-                      message: res.msg,
+                      message: res.data.msg,
                       iconClass: 'mintui mintui-success',
                       duration: 2000
                     });
@@ -350,11 +350,13 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
                     }, 2000)
                   } else {
                     Toast({
-                      message: res.msg,
+                      message: res.data.msg,
                       duration: 2000
                     });
                   }
-                })
+                }
+                 
+            })
               
             }).catch(cancel => {
 

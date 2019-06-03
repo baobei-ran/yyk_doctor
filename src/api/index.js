@@ -1,7 +1,7 @@
 import axios from 'axios';
-var baseURL = 'http://test99.yunyikang.cn'; 
-// var baseURL = 'https://www.yunyikang.cn'; // 正式
-
+// var baseURL = 'http://test99.yunyikang.cn'; 
+var baseURL = 'https://www.yunyikang.cn'; // 正式
+axios.defaults.baseURL = 'https://www.yunyikang.cn';
 var http = axios.create({
   baseURL: baseURL,
   withCredentials: true,
@@ -9,12 +9,14 @@ var http = axios.create({
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
   },
   transformRequest: [function (data) {
-    var newData = '';
-    for (var k in data) {
+    let newData = '';
+    for (let k in data) {
       if (data.hasOwnProperty(k) === true) {
         newData += encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) + '&';
       }
     }
+    newData = newData.substr(0, newData.length - 1);
+    console.log(newData)
     return newData;
   }]
 });
@@ -45,6 +47,15 @@ export default {
   },
   delete: function (url, params, response) {
     return apiAxios('DELETE', url, params, response)
+  },
+  postJson: function (url, data, response) {  // SetTime组件，调用设置时间
+    axios.post(url, data)
+    .then(function (res) {  
+      response(res)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
   },
   baseURL: baseURL
 }

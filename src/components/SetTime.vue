@@ -93,6 +93,7 @@
           type="number" id='money'
           placeholder="请设置门诊费用"
           v-model="Money"
+          v-enter-number2
         >
       </div>
       <div class="my_group">
@@ -100,7 +101,8 @@
         <input
           type="number"
           placeholder="请输入可预约人数（人）" id='num_rem'
-          v-model="PeopleCount" @keyup="ren_num"
+          v-model="PeopleCount" 
+          v-enter-number
         >
       </div>
     </div>
@@ -112,7 +114,7 @@
 </template>
 
 <script>
-import { Toast, Indicator,  MessageBox} from 'mint-ui';
+import { Indicator,  MessageBox} from 'mint-ui';
   export default {
     name: "SetTime",
     data() {
@@ -127,7 +129,6 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
         ActiveClass: true,//普通和专家切换使用的class
         ResData: null,//请求接口返回的数据
         Number: 1,//状态切换数字
-        pastdue: null, // 盛放过去的时间
         RequestData:[], // 盛放点击预约的时间
         Time_all: []    // 临时存放
       }
@@ -135,21 +136,22 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
     mounted: function () {
       this.GetList();
       var _this = this;
-      $("#money").blur(function () {
-         _this.Money =  _this.Money.replace(/^\d$/g, '$1');
-      })
       $("#money").on("input propertychange",function(event) {     // 输入的时候进行验证
-          // this.value = this.value.replace(/^([1-9]\d*(\.[\d]{0,2})?|0(\.[\d.]{0,2})?)[\d]*/g, '$1');
+          this.value = this.value.replace(/^([1-9]\d*(\.[\d]{0,2})?|0(\.[\d.]{0,2})?)[\d]*/g, '$1');
           this.value = this.value.replace(/[^\d\.]/g, '');
           var money2 = _this.Money.match(/^\d*(\.?\d{0,2})/g)[0]; // 保留小数点后面两位小数
           _this.Money = money2;
-          this.value = this.value.replace(".","$#$").replace(/\./g,"").replace("$#$","");
+          // this.value = this.value.replace(".","$#$").replace(/\./g,"").replace("$#$","");
           // this.value = this.value.replace(/\.{1,}/g,"$2$3");
       })
       $("#num_rem").on("input propertychange",function(event) {     // 输入的时候进行验证
-          this.value = this.value.replace(/[^\.]/g, '');
+          // this.value = this.value.replace(/[^\.]/g, '');
+          if (_this.PeopleCount <= 0) {
+            _this.PeopleCount = ''
+          }
       })
     },
+    
     updated: function () {
       var that = this;
       var Time = that.ResData.data.time;
@@ -197,16 +199,7 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
       
     },
     methods: {
-      ren_num() {
-        var n = new RegExp("^[0-9]*[1-9][0-9]*$");
-        if(!n.test(this.PeopleCount)) {
-          this.PeopleCount = ' '
-        } else {
-          this.PeopleCount = parseInt(this.PeopleCount);
-        }
-        
-      },
-     
+      
       ClicksaveComplete: function () { // 和 ios 和 android 交互
         var u = navigator.userAgent;
         var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
@@ -218,30 +211,10 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
             window.webkit.messageHandlers.saveComplete.postMessage(null);
         }
       },
-      isTimer: function (d) { // 获取当前之前过去的时间
-        var today = new Date();
-        var tMonth = today.getMonth();
-        var tDate = today.getDate();
-        tMonth = DoHandleMonth(tMonth + 1);
-        tDate = DoHandleMonth(tDate);
-        var data = tMonth + '.' + tDate;
-        var s = d
-        var a;
-        s.map((val, i) => {
-            if (data == val.date) {
-                a = i
-            }
-        })
-        
-        if (s.length > a) {
-            s.length = a
-        }
-        this.pastdue = s;
-        
-      },
+     
       GetList:function(){ // 获取数据
         var that = this;
-        var SelectDate = [], arr = [];
+        var SelectDate = [];
         var AllDays = 0;
         this.$https.post("mobile/doch5/get_time", {'did': this.$route.params.did}, function (res) {
             console.log(res)
@@ -257,16 +230,14 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
                 for (var i = num; i < AllDays; i++) {
                   (function (n) {
                     SelectDate.push(setDate(new Date(), n))
-                    arr.push(setDate(new Date(), n))
+                   
                     // SelectDate.push(GetDateTime(n))
                   })(i)
                 }
-               
-                that.Time = SelectDate    
-                var t = setTimeout(function () {
-                  that.isTimer(arr)  
-                  clearTimeout(t)
-                }, 100)
+               if (SelectDate.length > 1) {
+                 that.Time = SelectDate
+               }
+                
               } else  {
 
               }
@@ -297,27 +268,27 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
           data: this.RequestData,
         }
         if (this.RequestData.length == 0) {
-          Toast({
+          this.$toast({
             message: '请选择时段！',
             position: 'middle',
             duration: 2000
           });
           return false
         }  else if (this.Money == '') {
-          Toast({
+          this.$toast({
             message: '请设置门诊费用！',
             position: 'middle',
             duration: 2000
           });
         } else if (!isPrice.test(this.Money)) {
-          Toast({
+          this.$toast({
             message: '请输入整数或者保留两位小数',
             position: 'middle',
             duration: 2000
           });
           return false
         } else if (!n.test(this.PeopleCount)) {
-          Toast({
+          this.$toast({
             message: '请设定可预约人数！',
             position: 'middle',
             duration: 2000
@@ -327,10 +298,10 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
           
          MessageBox.confirm('<p style="color:#333;">保存后患者可在你的主页上预约门诊<br/>是否确认保存设定？</p>', {title:'服务提示'}).then(action => {
            console.log(obj)
-            this.$https.post("mobile/doch5/set_time", obj, function (res) {
+            this.$https.postJson("mobile/doch5/set_time", obj, function (res) {
                 if (res.status >= 200 && res.status < 300) {
                   if (res.data.code == 1) {
-                    Toast({
+                    that.$toast({
                       message: res.data.msg,
                       iconClass: 'mintui mintui-success',
                       duration: 2000
@@ -349,7 +320,7 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
                       that.ClicksaveComplete();
                     }, 2000)
                   } else {
-                    Toast({
+                    that.$toast({
                       message: res.data.msg,
                       duration: 2000
                     });
@@ -365,23 +336,14 @@ import { Toast, Indicator,  MessageBox} from 'mint-ui';
       },
       //点击获取数据
       SetActive: function (event, i) {
-        var flag = true
-        this.pastdue.map(function (val) {
-          if (i == val.date) {
-            flag = false
-          }
-        })
-        
         var $this = $(event.target);
         var that = this;
-        if (flag) {
-            if ($this.hasClass("ysz") || $this.hasClass("ytz")) {
-              return false
-            } else if ($this.hasClass("active")) {
-              $this.removeClass("active");
-            } else {
-              $this.addClass("active");
-            }
+        if ($this.hasClass("ysz") || $this.hasClass("ytz")) {
+          return false
+        } else if ($this.hasClass("active")) {
+          $this.removeClass("active");
+        } else {
+          $this.addClass("active");
         }
       }
     },

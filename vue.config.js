@@ -1,14 +1,14 @@
 // var path = require("path")
 const debug = process.env.NODE_ENV !== 'production'
 
-module.exports = {
-  publicPath:"/", // 公共路径
+module.exports = {  // production 是代表线上的意思
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/', // 公共路径
   outputDir: "dist", // 构建输出目录
   assetsDir: "assets", // 静态资源目录 (js, css, img, fonts)
   lintOnSave: false, // 是否开启eslint保存检测，有效值：ture | false | 'error'
   runtimeCompiler: true, // 运行时版本是否需要编译
   transpileDependencies: [], // 默认babel-loader忽略mode_modules，这里可增加例外的依赖包名
-  productionSourceMap: true, // 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度
+  productionSourceMap: false, // 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度
   configureWebpack: config => { // webpack配置，值位对象时会合并配置，为方法时会改写配置
     if (debug){ // 开发环境配置
       config.devtool = 'cheap-module-eval-source-map'
@@ -31,14 +31,15 @@ module.exports = {
       // 生产开发配置
     }
   },
-  parallel: require("os").cpus().length > 1, // 构建时开启多进程处理babel编译
+  // parallel: require("os").cpus().length > 1, // 构建时开启多进程处理babel编译
   pluginOptions: { // 第三方插件配置
   },
   pwa:{ // 单页插件相关配置 https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
   },
   devServer: {
     open: true,
-    host: "192.168.1.8",
+    // host: "192.168.1.8",
+    host: "192.168.8.107",
     port: 8081,
     https: false,
     hotOnly: false,

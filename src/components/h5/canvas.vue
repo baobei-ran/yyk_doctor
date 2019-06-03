@@ -72,11 +72,7 @@ export default {
             isImg: false
         }
     },
-    beforeCreate () {
-        this.$indicator.open({
-            spinnerType: 'fading-circle'
-        });
-    },
+   
  mounted () {
     var _this = this;
     _this.$https.post('/mobile/doch5/user_recipe_detail', {'id': this.$route.params.did }, function (res) {
@@ -123,7 +119,7 @@ export default {
             var width = shareContent.offsetWidth; //获取dom 宽度
             var height = shareContent.offsetHeight; //获取dom 高度
             var canvas = document.createElement("canvas"); //创建一个canvas节点
-            var scale = 2; //定义任意放大倍数 支持小数
+            var scale = window.devicePixelRatio * 4;//获取设备的显示参数
             canvas.width = width * scale; //定义canvas 宽度 * 缩放
             canvas.height = height * scale; //定义canvas高度 *缩放
             canvas.getContext("2d").scale(scale, scale); //获取context,设置scale 
@@ -132,9 +128,8 @@ export default {
                 scale: scale, // 添加的scale 参数
                 canvas: canvas, //自定义 canvas
                 // logging: true, //日志开关，便于查看html2canvas的内部执行流程
-                width: width, //dom 原始宽度
-                height: height,
-                dpi: 300,
+                // width: width, //dom 原始宽度
+                // height: height,
                 // allowTaint: true,
                 // useCORS: true // 【重要】开启跨域配置
             };
@@ -144,14 +139,13 @@ export default {
                 var imgs = canvas.toDataURL("image/png");
                 _this.imgUrl = imgs
                 // cntElem.style['-webkit-transform'] = 'scale(0.5)';
+                cntElem.style['display']='none';
                 var img = new Image()
                 img.src = imgs
                 img.style = 'width: 100%;'
-                cntElem.style['display'] = 'none'
                 document.getElementById('imgsss').appendChild(img)
                 _this.isImg = true
                 document.getElementById('canvas_box').style['background'] = '#000';
-                _this.$indicator.close();
             });
     
         }
@@ -160,26 +154,12 @@ export default {
     }
 }
 </script>
-<style lang='scss'>
-@function rem($px) {
-    @return $px / 58.2 +rem;
-}
-    .mint-indicator-wrapper {
-        height: rem(100);
-        line-height: rem(50);
-        overflow: hidden;
-        .mint-indicator-spin {
-            padding: rem(30);
-            margin-top: rem(-10);
-        }
-    }
-</style>
 
 
 <style lang="scss" scoped>
 
 @function rem($px) {
-    @return $px / 58.2 +rem;
+    @return $px / 50 +rem;
 }
 .image {
         width: 100%;
@@ -197,11 +177,11 @@ export default {
         align-items:center;
         -webkit-box-pack: center;
         /* 12版 */
-        -webkit-justify-content: center;
-        -moz-justify-content: center;
-        -ms-justify-content: center;
-        -o-justify-content: center;
-        justify-content: center;
+        // -webkit-justify-content: center;
+        // -moz-justify-content: center;
+        // -ms-justify-content: center;
+        // -o-justify-content: center;
+        // justify-content: center;
     }
 .flex {
     display:-webkit-box;
@@ -235,12 +215,13 @@ export default {
         background: #fff;
         width: 200%;
         height: 100%;
-        overflow: hidden;
-        font-size: rem(16);
+        // max-width: 200%;
+        font-size:16px;
         padding: 20px 30px;
-        zoom: 1;
+        overflow-x: auto;
+        // zoom: 1;
         -webkit-transform-origin-x: 0;    /*定义元素被置于x轴的何处*/
-        -webkit-transform: scale(1);   /*定义元素被缩放*/
+        -webkit-transform: scale(0.5);   /*定义元素被缩放*/
         .canvas_head {
             width: 100%;
             >ul {            
@@ -252,13 +233,13 @@ export default {
                 letter-spacing: 1px;
                 li {
                     width: 33%;
-                    font-size: rem(10);
+                    font-size: 10px;
                 }
             }
         }
         h2 {
             font-size: rem(20);
-            padding: rem(20);
+            padding: 20px;
             text-align: center;
             letter-spacing: rem(3);
         }
@@ -275,8 +256,8 @@ export default {
                 font-size: rem(10);
                 li {
                     width: 33%;
-                    height: rem(30);
-                    line-height: rem(30);
+                    height: 30px;
+                    line-height: 30px;
                     font-size: rem(16);
                     letter-spacing: rem(2);
                 }
@@ -294,10 +275,10 @@ export default {
                 margin-top: rem(20);
                 font-size: rem(10);
                 li {
-                    line-height: rem(30);
+                    line-height: 30px;
                     font-size: rem(16);
                     span {
-                        margin-left: rem(14);
+                        margin-left: 14px;
                     }
                 }
             }
@@ -306,12 +287,12 @@ export default {
                 right: rem(30);
                 bottom: rem(10);
                 font-size: rem(8);
-                width: rem(100);
-                height: rem(100);
+                width: 100px;
+                height: 100px;
 
                 img {
-                    width: rem(100);
-                    height: rem(100);
+                    width: 100px;
+                    height:100px;
                     border-radius: 50%;
                 }
             }
@@ -346,14 +327,13 @@ export default {
                     -moz-align-items: center;
                     -ms-align-items: center;
                     -o-align-items: center;
-                    font-size: rem(14);
-                    padding-bottom: 20px;
+                    font-size: 14px;
+                    padding-bottom: 30px;
                     > img {
-                        max-width: rem(40);
-                        height: rem(30);
-                        margin-left: rem(5);
+                        max-width: 50px;
+                        height: 30px;
+                        margin-left: 5px;
                         display: block;
-                        vertical-align: middle;
                     }
                 }
             }

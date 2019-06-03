@@ -14,7 +14,7 @@ const ShopDetails = () => import("../components/h5/shopdetails");
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   // mode: "history",
   // base: process.env.BASE_URL,
   routes: [
@@ -69,3 +69,15 @@ export default new Router({
     }
   ]
 });
+
+// 以下是处理vue错误 Loading chunk chunkname1 failed.
+router.onError((error) => {
+  const pattern = /Loading chunk (\d)+ failed/g;
+  const isChunkLoadFailed = error.message.match(pattern);
+  const targetPath = router.history.pending.fullPath;
+  if(isChunkLoadFailed){
+      router.replace(targetPath);
+  }
+})
+
+export default router;

@@ -7,6 +7,7 @@ import "./common/js/filter.js";
 import "./common/js/rem.js";
 import Axios from "./api/index.js";
 import "@/common/js/filter.js";
+import 'mint-ui/lib/style.css';
 import Mint from "mint-ui";
 Vue.prototype.$https = Axios;
 Vue.config.productionTip = false;

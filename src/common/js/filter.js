@@ -18,3 +18,43 @@ Vue.filter('filterTime', function(time) {
     return Y+'-'+M+'-'+D +' '+h+':'+ m
 })
 
+// 只能输入整数
+Vue.directive('enterNumber', {
+    inserted: function (el) {
+      el.addEventListener("keypress",function(e){
+        e = e || window.event;
+        let charcode = typeof e.charCode == 'number' ? e.charCode : e.keyCode;
+        let re = /\d/;
+        if(!re.test(String.fromCharCode(charcode)) && charcode > 9 && !e.ctrlKey){
+            if(e.preventDefault){
+                e.preventDefault();
+            }else{
+                e.returnValue = false;
+            }                            
+        }
+      });
+    }
+  });
+
+//   只能输入整数或者两位小数
+  Vue.directive('enterNumber2', {
+    inserted: function (el) {
+      el.addEventListener("keypress",function(e){
+        e = e || window.event;
+        let charcode = typeof e.charCode == 'number' ? e.charCode : e.keyCode;
+        let re = /\d/;
+        if(charcode == 46){
+          if(el.value.includes('.')){
+            e.preventDefault();
+          }
+          return;
+        }else if(!re.test(String.fromCharCode(charcode)) && charcode > 9 && !e.ctrlKey){
+          if(e.preventDefault){
+            e.preventDefault();
+          }else{
+              e.returnValue = false;
+          }
+        }
+      });
+    }
+  });

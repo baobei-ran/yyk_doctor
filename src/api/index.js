@@ -16,7 +16,7 @@ var http = axios.create({
       }
     }
     newData = newData.substr(0, newData.length - 1);
-    console.log(newData)
+    // console.log(newData)
     return newData;
   }]
 });

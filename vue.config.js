@@ -1,4 +1,5 @@
 // var path = require("path")
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const debug = process.env.NODE_ENV !== 'production'
 
 module.exports = {  // production 是代表线上的意思
@@ -10,9 +11,32 @@ module.exports = {  // production 是代表线上的意思
   transpileDependencies: [], // 默认babel-loader忽略mode_modules，这里可增加例外的依赖包名
   productionSourceMap: false, // 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度
   configureWebpack: config => { // webpack配置，值位对象时会合并配置，为方法时会改写配置
+    if (process.env.NODE_ENV === 'production') {
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+    }
+     // 去除console.log()
+     optimization: {
+      minimizer: [
+         new UglifyJsPlugin ({
+           uglifyOptions: {
+             compress: {
+               warnings: false,
+               drop_debugger: true,
+               drop_console: true,
+              //  pure_funcs: ['console.log']  // 移除 console
+             },
+           },
+           sourceMap: false,
+           parallel: true,
+         })
+       ]
+     }
+ ///////////////////////////////////////////////////////////////
     if (debug){ // 开发环境配置
       config.devtool = 'cheap-module-eval-source-map'
-    } else{ // 生产环境配置
+     
+    } else { // 生产环境配置
+      
     }
     // Object.assign(config,{ // 开发生产共同配置，配置别名
     //   resolve: {
@@ -23,6 +47,7 @@ module.exports = {  // production 是代表线上的意思
     //     }
     //   }
     // })
+
 },
   chainWebpack: config =>{ // webpack链接API，用于生成和修改webapck配置，
     if (debug) {
@@ -39,7 +64,8 @@ module.exports = {  // production 是代表线上的意思
   devServer: {
     open: true,
     // host: "192.168.1.8",
-    host: "192.168.8.107",
+    // host: "192.168.8.107",
+    host: "localhost",
     port: 8081,
     https: false,
     hotOnly: false,

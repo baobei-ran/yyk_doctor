@@ -56,7 +56,7 @@ module.exports = {  // production 是代表线上的意思
       // 生产开发配置
     }
   },
-  // parallel: require("os").cpus().length > 1, // 构建时开启多进程处理babel编译
+  parallel: require("os").cpus().length > 1, // 构建时开启多进程处理babel编译
   pluginOptions: { // 第三方插件配置
   },
   pwa:{ // 单页插件相关配置 https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
@@ -64,8 +64,8 @@ module.exports = {  // production 是代表线上的意思
   devServer: {
     open: true,
     // host: "192.168.1.8",
-    // host: "192.168.8.107",
-    host: "localhost",
+    host: "192.168.8.107",
+    // host: "localhost",
     port: 8081,
     https: false,
     hotOnly: false,

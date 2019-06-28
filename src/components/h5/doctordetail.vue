@@ -3,17 +3,17 @@
         
        <div class="box">
             <div class="section"  id='html'>
-                <div class="check" v-show='datalist.flag == 0'>
-                    未审核
+                <div class="checks " v-show='datalist.flag == 0'>
+                    <img src="../../common/img/icon_wsh@2x.png" /> <span>未审核</span>
                 </div>
-                <div class="check" v-show='datalist.flag == 1'>
-                    审核通过
+                <div class="checks" v-show='datalist.flag == 1'>
+                    <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>审核通过</span>
                 </div>
-                <div class="check" v-show='datalist.flag == 2'>
-                    审核未通过
+                <div class="checks oringes" v-show='datalist.flag == 2'>
+                   <img src="../../common/img/icon_shwtg@2x.png" alt="" /> <span>药师审核未通过</span>
                 </div>
-                <div class="check" v-show='datalist.flag == 3'>
-                    已过期
+                <div class="checks oringes" v-show='datalist.flag == 3'>
+                    <img src="../../common/img/icon_cfygq@2x.png" alt="" /> <span>处方已过期</span>
                 </div>
             <div class="bg_f">
                 <div class="canvas">
@@ -77,12 +77,13 @@
             
         <div class="detail_con" >        
             <ul>
-                <li><span  class="blue">开具医生：</span><span>{{ datalist.true_name }}</span></li>
                 <li><span>处方单号：</span><span>{{ datalist.number }}</span></li>
                 <li><span>开具时间：</span><span>{{ datalist.creatime | filterTime }}</span></li>
+                <li><span>开具医生：</span><span>{{ datalist.true_name }}</span></li>
             </ul>
             <div class="msg">
-                <div><span  class="blue" >患者信息：</span><span>{{ datalist.name }} <b>|</b> <i v-text='datalist.sex ==0? "男" : "女"' ></i> <b>|</b> {{ datalist.age }}</span></div>
+                <div><span >患者信息：</span><span>{{ datalist.name }} <b>|</b> <i v-text='datalist.sex ==0? "男" : "女"' ></i> <b>|</b> {{ datalist.age }}</span></div>
+                <div class="left"><span>患者手机：</span><span>{{ datalist.result }}</span></div>
                 <div class="left"><span>诊断结果：</span><span>{{ datalist.result }}</span></div>
                 <div class="left"><span>处理意见：</span><span>{{ datalist.opinion }}</span></div>
             </div>
@@ -91,7 +92,13 @@
             <h4>处方中的药品</h4>
             <ul>
                 <li v-for='(val,i) in drop' :key='i'>
-                    <div> <span>{{ val.name }}</span><b>x{{ val.num }}</b></div>
+                    <div> 
+                        <img src="../../common/img/img_dtzs.png" alt="" />
+                        <dl>
+                            <dt><span>{{ val.name }}</span><b>￥{{ val.num }}</b></dt>
+                            <dd><span>{{ val.name }}</span><b>x{{ val.num }}</b></dd>
+                        </dl>
+                    </div>
                     <p>用法用量：{{ val.usage }}</p>
                 </li>
             </ul>
@@ -105,6 +112,9 @@
             </dt>
             <dd>
                 <span>审核时间：</span><span>{{ datalist.flag_time | filterTime }}</span>
+            </dd>
+            <dd>
+                <span>审核说明：</span><span>{{ datalist.flag_time | filterTime }}</span>
             </dd>
         </dl>
            
@@ -206,24 +216,36 @@ $color: #333;
         overflow: auto;
         .section {
         width: 100%;
-        .check {
-            font-size: rem(40);
-            font-weight:550;
-            height: rem(141);
-            padding: 0 rem(22);
-            line-height: rem(141);
+        > .checks {
+            height: rem(88);
+            line-height: rem(88);
+            padding:0 rem(32);
+            background-color: #EDF3FE;
+            font-size: rem(32);
+            color:#5189F6;
+            > img {
+                width: rem(40);
+                height: rem(40);
+                display: inline-block;
+                margin-right: rem(22);
+                vertical-align: middle;
+            }
+        }
+        .oringes {
+            background-color: #FFFDF2EE;
+            color: #EC8158FF;
         }
         .bg_f {
             background-color: #fff;
-            padding: rem(32) rem(22);
+            padding: rem(32) rem(30);
             height: rem(360);
             position: relative;
             >.canvas {
                 width: 100%;
                 height: 100%;
                 overflow: hidden;
-               
-               
+                border: 1px solid #999;
+                background-color: #fff;
             }
             >span {
                 position: absolute;
@@ -231,13 +253,12 @@ $color: #333;
                 left: 50%;
                 display: block;
                 width: rem(240);
-                // height: rem(50);
+                font-size: rem(20);
                 border-radius: rem(25);
                 background: rgb(0,0,0);
                 opacity: .5;
                 color: #fff;
                 text-align: center;
-                // line-height: rem(50);
                 padding: rem(10) rem(10) rem(12) rem(10);
                 -webkit-transform: translateX(-50%); 
                 -o-transform: translateX(-50%); 
@@ -252,15 +273,15 @@ $color: #333;
 
         .detail_con {
             font-size: rem(28);
-            margin-top: rem(22);
-            background: #fff;
             .blue {
                 border-left: 3px solid #5189F6;
             }
             ul {
                 font-weight: 400;
                 width: 100%;
-                padding: rem(20) 0;
+                padding: rem(20) rem(10);
+                margin-top: rem(22);
+                background: #fff;
                 li {
                     width: 100%;
                     padding:rem(20) 0;
@@ -269,7 +290,7 @@ $color: #333;
                     span:first-child {
                         color: #808080;
                         display: block;
-                        width: 30%;
+                        width: 26%;
                         padding-left: rem(20);
                     }
                     span:last-child {
@@ -277,23 +298,22 @@ $color: #333;
                     }
                 }
             }
-            ul:first-child {
-                border-bottom: 1px solid rgba(224,224,224,1);
-            }
+            
             .msg {
                 width: 100%;
-                
+                margin-top: rem(22);
+                background: #fff;
                 > div {
-                    padding: rem(30) 0;
+                    padding: rem(10);
                     overflow: hidden;
                     line-height:rem(44);
-                    border-bottom: 1px solid #E0E0E0;
+                    
                      span:first-child {
                         color: #808080;
                         display: block;
                         float: left;
                         padding-left: rem(20);
-                        width: 30%;
+                        width: 26%;
                     }
                     span:last-child {
                         
@@ -305,13 +325,12 @@ $color: #333;
                     }
                 }
                 .left {
-                    padding: rem(30) rem(20);
+                    padding: rem(10) rem(30);
                     overflow: hidden;
                     line-height:rem(44);
-                    border-bottom: 1px solid #E0E0E0;
                     > span:first-child {
                         padding-left:0;
-                        width: 29%;
+                        width: 25%;
                     }
                     
                 }
@@ -325,24 +344,54 @@ $color: #333;
                 padding-top: rem(36);
                 h4 {
                     line-height: rem(42);
-                    padding:0 rem(16);
-                    font-size: rem(28);
-                    border-left: 3px solid #5189F6;
+                    padding:0 rem(30);
+                    font-size: rem(26);
+                    color: #333;
+                    // border-left: 3px solid #5189F6;
                 }
                 ul {
+                    width:100%;
                     li {
-                        padding: rem(42) rem(23);
+                        padding: rem(42) rem(30);
                         font-size: rem(28);
-                        border-bottom:1px solid #E0E0E0;
-                        div {
-                           
-                           b {
-                               float: right;
-                               color:#808080;
+                        border-bottom:1px solid #F0F2F6;
+                        > div {
+                            width:100%;
+                            overflow: hidden;
+                           img {
+                               width: rem(100);
+                               height: rem(100);
+                               display: block;
+                               float: left;
+                               
                            }
+                           > dl {
+                               width: 80%;
+                               float: right;
+                               margin: 0;
+                               vertical-align: top;
+                               padding-right: rem(23);
+                               dt {
+                                   b {
+                                        float: right;
+                                        color:#808080;
+                                    }
+                               }
+                               dd {
+                                   margin: 0;
+                                   margin-top:rem(18);
+                                   font-size: rem(22);
+                                   color:#808080;
+                                   b {
+                                        float: right;
+                                        color:#808080;
+                                    }
+                               }
+                           }
+                           
                         }
-                        p {
-                            margin-top: rem(32);
+                        p {font-size: rem(24);
+                            margin-top: rem(20);
                             color: #808080;
                         }
                     }
@@ -369,11 +418,11 @@ $color: #333;
                 align-items:center;
                 font-size: rem(28);
                 span {
-                    border-left: 3px solid #5189F6;
+                    // border-left: 3px solid #5189F6;
                     padding-left: rem(23);
                     color: #808080;
                     display: block;
-                    width: 30%;
+                    width: 26%;
                     }
                 img {
                     margin-left: rem(10);
@@ -396,7 +445,7 @@ $color: #333;
                 span:first-child {
                         color: #808080;
                         display: block;
-                        width: 30%;
+                        width: 26%;
                         
                     }
                     span:last-child {

@@ -16,4 +16,12 @@ html, body, #app {
 body{
   overflow-x: hidden;
 }
+.mint-indicator-wrapper {
+  height: 100px;
+  line-height: 15px;
+  padding: 10px !important;
+}
+.mint-indicator-text {
+  font-size: 14px !important;
+}
 </style>

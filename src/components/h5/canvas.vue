@@ -72,7 +72,12 @@ export default {
             isImg: false
         }
     },
-   
+    beforeCreate () {
+        this.$indicator.open({
+            text: '加载中...',
+            spinnerType: 'fading-circle'
+        });
+    },
  mounted () {
     var _this = this;
     _this.$https.post('/mobile/doch5/user_recipe_detail', {'id': this.$route.params.did }, function (res) {
@@ -127,7 +132,7 @@ export default {
                 backgroundColor:null,
                 scale: scale, // 添加的scale 参数
                 canvas: canvas, //自定义 canvas
-                // logging: true, //日志开关，便于查看html2canvas的内部执行流程
+                logging: false, //日志开关，便于查看html2canvas的内部执行流程
                 // width: width, //dom 原始宽度
                 // height: height,
                 // allowTaint: true,
@@ -146,11 +151,15 @@ export default {
                 document.getElementById('imgsss').appendChild(img)
                 _this.isImg = true
                 document.getElementById('canvas_box').style['background'] = '#000';
+                _this.$indicator.close();
             });
     
         }
       
 
+    },
+    beforeDestroy () {
+        this.$indicator.close();
     }
 }
 </script>

@@ -12,8 +12,6 @@ import Mint from "mint-ui";
 Vue.prototype.$https = Axios;
 Vue.config.productionTip = false;
 Vue.use(Mint);
-var env = process.env.NODE_ENV
-console.log(env)
 new Vue({
   router,
   render: h => h(App)

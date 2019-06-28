@@ -1,29 +1,40 @@
 <template>
     <div class="detail_box">
-    <div class="detail" v-if='flag'>
+    <div class="detail" v-if='status'>
         <div class="bg_f lunbo">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide" v-for='(val,i) in pics' :key='i'>
-                        <img :src="$https.baseURL+val.img" alt="">
+                        <img :src="$https.baseURL+val.img" alt="" />
                     </div>
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
         </div>
-        <div class="title bg_f">
-            <span class="color_red">￥<span style='font-size: 0.3rem;'>{{ datalist.price }}</span></span>
+        <div class="title bg_f" v-if='flag'>
             <h4>{{ datalist.name }}</h4>
-            <p><span>{{ datalist.sales_volume }}</span>人购买</p>
+            <div class="price">
+                <span class="color_red">￥<span style='font-size: .28rem;'>{{ datalist.price }}</span></span>
+                <div class="nums">
+                    <span @click='handleminus'><img src="../../common/img/icon_js@2x.png" alt="" /></span>
+                    <span>{{ numVal }}</span>
+                    <span @click='handleadd'><img src="../../common/img/icon_zd@2x.png" alt="" /></span>
+                </div>
+            </div>
+            <!-- <p><span>{{ datalist.sales_volume }}</span>人购买</p> -->
         </div>
+
+        
+
+
         <div class="detail_con bg_f" v-if='datalist.type == 1? true:false'>        <!--  1 药品 2 保健品 3 医疗器械 -->
             <ul>
-                <li><span>商品类型：</span><span>{{ datalist.recipe }}</span></li>
+                <li class="border_blue"><span>商品类型：</span><span>{{ datalist.recipe }}</span></li>
                 <li><span>商品剂型：</span><span>{{ datalist.type2 }}</span></li>
                 <li><span>商品用法：</span><span>{{ datalist.usetype }}</span></li>
             </ul>
             <ul>
-                <li><span>规格：</span><span>{{ datalist.specification }}</span></li>
+                <li class="border_blue"><span>规格：</span><span>{{ datalist.specification }}</span></li>
                 <li><span>成分：</span><span>{{ datalist.type2 }}</span></li>
                 <li><span>性状：</span><span>{{ datalist.usetype }}</span></li>
                 <li><span>功能主治：</span><span>{{ datalist.attending_functions }}</span></li>
@@ -68,12 +79,44 @@
                 <li v-for='(val,i) in imgs' :key='i' ><img :src="$https.baseURL+val.img" alt=""></li>
             </ul>
         </div>
-        <!-- <div class="cont_img">
-            <ul>
-                <li v-for='(val,i) in pics' :key='i' ><img :src="$https.baseURL+val.img" alt=""></li>
-            </ul>
-        </div> -->
     </div>
+    
+    <div class="detail" v-if="shopStatus">
+        <div class="banner">
+            <img :src="$https.baseURL+shopData.pic" alt="" />
+        </div>
+        <div class="title bg_f">
+            <h4>{{ shopData.name }}</h4>
+            <div class="price">
+                <span class="color_red">￥<span style='font-size: .28rem;'>{{ shopData.money }}</span></span>
+                <div class="nums">
+                    <span @click='handleminus'><img src="../../common/img/icon_js@2x.png" alt="" /></span>
+                    <span>{{ numVal }}</span>
+                    <span @click='handleadd'><img src="../../common/img/icon_zd@2x.png" alt="" /></span>
+                </div>
+            </div>
+            <!-- <p><span>{{ datalist.sales_volume }}</span>人购买</p> -->
+        </div>
+        <div class="detail_con bg_f" >        <!-- 新接口 -->
+            <ul>
+                <li class="border_blue"><span>商品类型：</span><span>{{ shopData.cfy }}</span></li>
+                <li><span>商品剂型：</span><span>{{ shopData.ypzt }}</span></li>
+                <li><span>商品用法：</span><span>{{ shopData.yfyl }}</span></li>
+            </ul>
+            <ul>
+                <li class="border_blue"><span>规格：</span><span>{{ shopData.gg }}</span></li>
+                <li><span>成分：</span><span>{{ shopData.cf }}</span></li>
+                <li><span>性状：</span><span>{{ shopData.xz }}</span></li>
+                <li><span>功能主治：</span><span>{{ shopData.syz }}</span></li>
+                <li><span>用法用量：</span><span>{{ shopData.yfyl }}</span></li>
+                <li><span>生产厂家：</span><span>{{ shopData.gc }}</span></li>
+                <li><span>有效期：</span><span>{{ shopData.yxq }}</span></li>
+                <li><span>批准文号：</span><span>{{ shopData.pzwh }}</span></li>
+                <li><span>注意事项：</span><span>{{ shopData.zysx }}</span></li>
+            </ul>
+        </div>
+    </div>
+    
     <div class="empty_2" v-if='!flag'>
         <img src="../../common/img/icon/default.png" alt="">
         <p class="Ft-S28">您查看的商品已被删除，请查看其他商品。</p>
@@ -81,10 +124,14 @@
     </div>
 </template>
 <script>
+import { hybrid } from '../../common/js/app'
 export default {
+    name: 'newshopdetails',
     data () {
         return {
             flag: true,
+            status: false,
+            shopStatus: false,
             datalist:{
                 attending_functions: "",
                 cautions: "",
@@ -106,20 +153,54 @@ export default {
             },
             imgs: [],
             pics: [],
+            numVal: this.$route.params.int,     // 数量
+            id: this.$route.params.did,
+            shopData: {},               // new
         }
     },
+    created () {
+        console.log(window)
+        window.add = this.add
+        hybrid.minus = this.minus
+        this.status = false
+        this.shopStatus = false
+    },
     mounted () {
-        this.initdata()
+        if (this.$route.params.tag == 1) {
+            this.newinitdata()
+        } else {
+            this.initdata()
+        }
     },
     methods: {
+        handleClick: function (type) { // 和 ios 和 android 交互
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            var obj = { type:type, val: this.numVal }   // 给 ios 传参
+            var obj2 = {};
+            if (this.$route.params.tag == 1) { // 给 android 传参
+                obj2 = this.shopData
+            } else {
+                obj2 = this.datalist
+            }
+            console.log(obj2)
+            if (isAndroid) {
+                android.getDrugNum(this.numVal, this.$route.params.tag, obj2)
+            }
+            if (isiOS) {
+                window.webkit.messageHandlers.getDrugNum.postMessage(obj);
+            }
+        },
         initdata () {
              var _this = this;
-            this.$https.post('/mobile/doch5/doc_goods_detail', {id: this.$route.params.did }, function (res) {
+            this.$https.post('/mobile/doch5/doc_goods_detail', {id: this.id }, function (res) {
                 var datas = res.data
                 console.log(datas)
                 if (datas.code == 1) {
                     _this.flag = true;
                     _this.$nextTick(() => {
+                        _this.status = true
                         _this.datalist = datas.data
                         _this.datalist.usetype = datas.data.usetype == 1? '内服': '外用'
                         _this.datalist.recipe = datas.data.recipe == 0? '非处方':'处方'
@@ -141,7 +222,46 @@ export default {
                     _this.flag = false
                 }
             })
-        }
+        },
+        newinitdata() {
+            var self = this;
+            self.$https.post('/mobile/doch5/store_goods_detail', {id: this.id }, function (res) {
+                console.log(res.data)
+                if (res.data.code == 1) {
+                    self.shopStatus = true
+                    self.shopData = res.data.data
+                } else {
+                    self.shopStatus = false
+                    self.flag = false
+                }
+            })
+        },
+        add (num) {
+            this.numVal = num
+        },
+        minus (num) {
+            this.numVal = num
+        },
+        handleadd () {
+            if (this.numVal >= this.shopData.stock) {
+                this.$toast({
+                    message: '购买已达上限!',
+                    position: 'middle',
+                    duration: 2000
+                });
+                return false;
+            }
+            this.numVal ++
+            this.handleClick('yes')
+            
+        },
+        handleminus () {
+            if (this.numVal <= 0) {
+                return;
+            }
+            this.numVal --
+            this.handleClick('no')
+        },
     }
 }
 </script>
@@ -161,6 +281,12 @@ $color: #333;
     background-color: #f4f4f4;
     padding-bottom: .3rem;
     font-size: rem(14);
+    .banner {
+        width: 100%;
+        img {
+            width:100%;
+        }
+    }
     .lunbo {
         width:100%;
         .swiper-pagination {
@@ -183,14 +309,43 @@ $color: #333;
             font-weight:500;
             color:#333;
             line-height:0.33rem;
-            margin-top: 0.2rem;
         }
-        .color_red {
-            color: #E9541F;
-            font-size: 0.24rem;
+        .price {
+            margin-top: 0.19rem;
+            font-size: 0.22rem;
+            font-weight: 550;
+            overflow: hidden;
+            .color_red {
+                color: #E9541F;
+            }
+            .nums {
+                float: right;
+                margin-right: rem(5);
+                span {
+                    display: inline-block;
+                    height: rem(24);
+                    border-radius: 100%;
+                    text-align: center;
+                    line-height: rem(26);
+                    img {
+                        width: rem(24);
+                        height: rem(24);
+                        display: inline-block;
+                        vertical-align: top;
+                   }
+                }
+               
+                span:nth-child(2) {
+                    min-width: rem(25);
+                    font-size: rem(16);
+                    font-weight: normal;
+                    color: #333;
+                   
+                }
+            }
         }
         p {
-            margin-top: 0.36rem;
+            margin-top: 0.38rem;
             color:#A9A9A9;
             font-size: 0.22rem;
             span {
@@ -214,10 +369,14 @@ $color: #333;
                 span:first-child {
                     color: #808080;
                     display: block;
-                    width: 30%;
+                    width: 26%;
+                    line-height: rem(26);
                 }
                 span:last-child {
                     color: #333;
+                    display: block;
+                    width: 70%;
+                    line-height: rem(26);
                 }
             }
             .border_blue {

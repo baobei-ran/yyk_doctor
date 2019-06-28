@@ -2,12 +2,12 @@
     <div class="detail">
         
        <div class="box">
-            <div class="section"  id='html'>
-                <div class="check" v-show='datalist.status == 1'>
-                    开具成功
+            <div class="section_head" >
+                <div class="checks blues" v-show='datalist.status == 1'>
+                   <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>开具成功</span>
                 </div>
-                <div class="check" v-show='datalist.status == 2'>
-                    处方过期
+                <div class="checks oranges" v-show='datalist.status == 2'>
+                    <img src="../../common/img/icon_cfygq@2x.png" alt="" /> <span>处方过期</span>
                 </div>
             <div class="bg_f">
                 <div class="canvas">
@@ -71,12 +71,12 @@
             
         <div class="detail_con" >        
             <ul>
-                <li><span  class="blue">开具医生：</span><span>{{ datalist.true_name }}</span></li>
+                <li><span >开具医生：</span><span>{{ datalist.true_name }}</span></li>
                 <li><span>处方单号：</span><span>{{ datalist.number }}</span></li>
                 <li><span>开具时间：</span><span>{{ datalist.start_time | filterTime }}</span></li>
             </ul>
             <div class="msg">
-                <div><span  class="blue" >患者信息：</span><span>{{ datalist.name }} <b>|</b> <i v-text='datalist.sex ==1? "男" : datalist.sex == 0 ? "女": ""' ></i> <b>|</b> {{ datalist.age }}</span></div>
+                <div class="left"><span >患者信息：</span><span>{{ datalist.name }} <b>|</b> <i v-text='datalist.sex ==1? "男" : datalist.sex == 0 ? "女": ""' ></i> <b>|</b> {{ datalist.age }}</span></div>
                 <div class="left"><span>诊断结果：</span><span>{{ datalist.result }}</span></div>
                 <div class="left"><span>处理意见：</span><span>{{ datalist.opinion }}</span></div>
             </div>
@@ -184,25 +184,48 @@ $color: #333;
         -ms-flex: 1; 
         flex: 1; 
         overflow: auto;
-        .section {
-        width: 100%;
-        .check {
-            font-size: rem(40);
+        .section_head {
+            width: 100%;
+        .checks {
+            width: 100%;
+            font-size: rem(32);
             font-weight:550;
-            height: rem(141);
-            padding: 0 rem(22);
-            line-height: rem(141);
+            height: rem(88);
+            padding: 0 rem(32);
+            line-height: rem(88);
+            > img {
+                width: rem(40);
+                height: rem(40);
+                display: inline-block;
+                vertical-align: middle;
+                margin-top: rem(-5);
+                margin-right: rem(20);
+            }
+        }
+        .blues {
+            background-color: #EDF3FE;
+            color:#5189F6;
+            span {
+                color:#5189F6;
+            }
+        }
+        .oranges {
+            background-color: #FFFDF2EE;
+            color: #EC8158FF;
+            span {
+                color: #EC8158FF;
+            }
         }
         .bg_f {
             background-color: #fff;
-            padding: rem(32) rem(22);
+            padding: rem(30);
             height: rem(360);
             position: relative;
             >.canvas {
                 width: 100%;
                 height: 100%;
                 overflow: hidden;
-               
+                border: 1px solid #999;
                
             }
             >span {
@@ -210,9 +233,8 @@ $color: #333;
                 bottom: rem(13+32);
                 left: 50%;
                 display: block;
+                font-size: rem(20);
                 width: rem(240);
-                // height: rem(50);
-                // line-height: rem(50);
                 border-radius: rem(25);
                 background: rgb(0,0,0);
                 opacity: .5;
@@ -233,14 +255,15 @@ $color: #333;
         .detail_con {
             font-size: rem(28);
             margin-top: rem(22);
-            background: #fff;
+            
             .blue {
                 border-left: 3px solid #5189F6;
             }
             ul {
                 font-weight: 400;
                 width: 100%;
-                padding: rem(20) 0;
+                padding: rem(20) rem(10);
+                background: #fff;
                 li {
                     width: 100%;
                     padding:rem(20) 0;
@@ -249,7 +272,7 @@ $color: #333;
                     span:first-child {
                         color: #808080;
                         display: block;
-                        width: 30%;
+                        width: 26%;
                         padding-left: rem(20);
                     }
                     span:last-child {
@@ -257,22 +280,20 @@ $color: #333;
                     }
                 }
             }
-            ul:first-child {
-                border-bottom: 1px solid rgba(224,224,224,1);
-            }
+            
             .msg {
                 width: 100%;
-                
+                background: #fff;
+                margin-top: rem(20);
                 > div {
-                    padding: rem(30) 0;
+                    padding: rem(15) rem(30);
                     overflow: hidden;
                     line-height:rem(44);
-                    border-bottom: 1px solid #E0E0E0;
-                     span:first-child {
+                    span:first-child {
                         color: #808080;
                         display: block;
                         float: left;
-                        padding-left: rem(20);
+                        width: 26%;
                     }
                     span:last-child {
                         color: #333;
@@ -280,15 +301,6 @@ $color: #333;
                         b {
                             color: #E0E0E0;
                         }
-                    }
-                }
-                .left {
-                    padding: rem(30) rem(20);
-                    overflow: hidden;
-                    line-height:rem(44);
-                    border-bottom: 1px solid #E0E0E0;
-                    > span:first-child {
-                        padding-left: 0;
                     }
                 }
             }
@@ -301,14 +313,15 @@ $color: #333;
                 padding-top: rem(36);
                 h4 {
                     line-height: rem(42);
-                    padding:0 rem(16);
+                    padding:0 rem(30);
                     font-size: rem(27);
-                    border-left: 3px solid #5189F6;
+                    font-weight: 500;
                 }
                 ul {
+                    padding: 0 rem(30);
                     li {
-                        padding: rem(42) rem(23);
-                        border-bottom:1px solid #E0E0E0;
+                        padding: rem(30) 0;
+                        border-bottom:1px solid #F0F2F6;
                         font-size: rem(28);
                         div {
                            
@@ -318,7 +331,7 @@ $color: #333;
                            }
                         }
                         p {
-                            margin-top: rem(32);
+                            margin-top: rem(18);
                             color: #808080;
                         }
                     }
@@ -373,7 +386,7 @@ $color: #333;
 
     .canvas {
         width: 100%;
-         background: rgba(0,0,0, .1);
+        //  background: rgba(0,0,0, .1);
         .html_content {
         width: 200%;
         height: 100%;

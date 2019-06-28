@@ -11,9 +11,9 @@ const DoctorDetail = () => import(/* webpackChunkName: "chunkname2" */ "../compo
 const DoctorDownload = () => import(/* webpackChunkName: "chunkname2" */ "../components/h5/doctorcanvas");
 
 const ShopDetails = () => import("../components/h5/shopdetails");
+const NewShopDetails = () =>import('../components/h5/newshopdetails.vue');
 
 Vue.use(Router);
-
 const router = new Router({
   // mode: "history",
   // base: process.env.BASE_URL,
@@ -66,7 +66,13 @@ const router = new Router({
       title: "下载处方单",
       name: "doctordownload",
       component: DoctorDownload
-    }
+    },
+    {
+      path: "/newshopdetails/:did/:tag/:int", // did 详情id， tag 标识
+      title: "新商品详情页",
+      name: "newshopdetails",
+      component: NewShopDetails
+    },
   ]
 });
 

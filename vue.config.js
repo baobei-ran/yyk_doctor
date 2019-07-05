@@ -21,8 +21,8 @@ module.exports = {  // production 是代表线上的意思
            uglifyOptions: {
              compress: {
                warnings: false,
-               drop_debugger: true,
-               drop_console: true,
+               drop_debugger: false,
+               drop_console: false,
               //  pure_funcs: ['console.log']  // 移除 console
              },
            },
@@ -50,6 +50,7 @@ module.exports = {  // production 是代表线上的意思
 
 },
   chainWebpack: config =>{ // webpack链接API，用于生成和修改webapck配置，
+    // config.entry('main').add('babel-polyfill') // main是入口js文件
     if (debug) {
       // 本地开发配置
     } else {

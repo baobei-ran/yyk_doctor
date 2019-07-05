@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "core-js": "^2.6.5",
+    "es6-promise": "^4.2.8",
     "html2canvas": "^1.0.0-rc.1",
     "mint-ui": "^2.2.13",
     "vue": "^2.6.10",

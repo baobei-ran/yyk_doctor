@@ -45,7 +45,7 @@ input, textarea, select {
   font-family: inherit;
 }
 
-body, h1, h2, h3, h4, h5, h6, p, ul, ol, form {
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, form, dl, dt, dd {
   margin: 0;
 }
 
@@ -170,3 +170,70 @@ textarea:-ms-input-placeholder {
 }
 
 
+
+.dis_f {
+  display: -webkit-box; 
+  display: -moz-box; 
+  display: -webkit-flex; 
+  display: -moz-flex; 
+  display: -ms-flexbox; 
+  display: flex;
+}
+.flex_c {
+  -webkit-box-orient:vertical;
+  -webkit-box-direction:normal;
+  -moz-box-orient:vertical;
+  -moz-box-direction:normal;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  -o-flex-direction: column;
+  flex-direction: column;
+}
+
+.dis_j {
+  -moz-box-pack:center;
+  box-pack:center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  -o-justify-content: center;
+  justify-content: center;
+}
+.dis_end {      /* 内容靠右侧 */
+  -webkit-justify-content: flex-end;
+  -moz-justify-content: flex-end;
+  -ms-justify-content: flex-end;
+  -o-justify-content: flex-end;
+  justify-content: flex-end;
+}
+.dis_sb {
+  -webkit-justify-content:space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  -o-justify-content: space-between;
+  justify-content: space-between;
+}
+.dis_sa {
+  -webkit-justify-content:space-around;
+  -moz-justify-content: space-around;
+  -ms-justify-content: space-around;
+  -o-justify-content: space-around;
+  justify-content: space-around;
+}
+
+.flex_i {
+  -webkit-align-items:center;
+  box-align:center;
+  -moz-box-align:center;
+  -webkit-box-align:center;
+  align-items:center;
+}
+
+.flex1 {
+  -webkit-box-flex: 1;              
+  -moz-box-flex: 1;                 
+  -webkit-flex: 1;                    
+  -ms-flex: 1;                           
+  flex: 1;                                 
+  }

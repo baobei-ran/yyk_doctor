@@ -180,13 +180,13 @@ export default {
             var obj = { type:type, val: this.numVal }   // 给 ios 传参
             var obj2 = {};
             if (this.$route.params.tag == 1) { // 给 android 传参
-                obj2 = this.shopData
+                obj2 = JSON.stringify(this.shopData)
             } else {
-                obj2 = this.datalist
+                obj2 = JSON.stringify(this.datalist)
             }
             console.log(obj2)
             if (isAndroid) {
-                android.getDrugNum(this.numVal, this.$route.params.tag, obj2)
+                android.getDrugNum(this.numVal, obj2)
             }
             if (isiOS) {
                 window.webkit.messageHandlers.getDrugNum.postMessage(obj);
@@ -243,9 +243,9 @@ export default {
             this.numVal = num
         },
         handleadd () {
-            if (this.numVal >= this.shopData.stock) {
+            if (this.shopData.stock && this.numVal >= this.shopData.stock) {
                 this.$toast({
-                    message: '购买已达上限!',
+                    message: '此药品库存不足!',
                     position: 'middle',
                     duration: 2000
                 });

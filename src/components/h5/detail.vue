@@ -3,11 +3,24 @@
         
        <div class="box">
             <div class="section_head" >
-                <div class="checks blues" v-show='datalist.status == 1'>
-                   <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>开具成功</span>
+                <div class="shou" v-show="datalist.drug_type == 2">
+                    <div class="checks blues" v-show='datalist.status == 1'>
+                        <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>开具成功</span>
+                    </div>
+                    <div class="checks oranges" v-show='datalist.status == 2'>
+                        <img src="../../common/img/icon_cfygq@2x.png" alt="" /> <span>处方过期</span>
+                    </div>
                 </div>
-                <div class="checks oranges" v-show='datalist.status == 2'>
-                    <img src="../../common/img/icon_cfygq@2x.png" alt="" /> <span>处方过期</span>
+                <div class="drugstore" v-show="datalist.drug_type == 1">
+                    <div class="checks blues" v-show='datalist.drug_autdit == 0'>
+                        <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>处方未审核</span>
+                    </div>
+                    <div class="checks blues" v-show='datalist.drug_autdit == 1'>
+                        <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>药师审核通过</span>
+                    </div>
+                    <div class="checks oranges" v-show='datalist.drug_autdit == 2'>
+                        <img src="../../common/img/icon_cfygq@2x.png" alt="" /> <span>药师审核未通过</span>
+                    </div>
                 </div>
             <div class="bg_f">
                 <div class="canvas">
@@ -77,22 +90,40 @@
             </ul>
             <div class="msg">
                 <div class="left"><span >患者信息：</span><span>{{ datalist.name }} <b>|</b> <i v-text='datalist.sex ==1? "男" : datalist.sex == 0 ? "女": ""' ></i> <b>|</b> {{ datalist.age }}</span></div>
+                <div class="left"><span>患者主诉：</span><span>{{ datalist.opinion }}</span></div>
                 <div class="left"><span>诊断结果：</span><span>{{ datalist.result }}</span></div>
-                <div class="left"><span>处理意见：</span><span>{{ datalist.opinion }}</span></div>
+                
             </div>
         </div>
-        <div class="recipe">
+        <div class="recipe" v-show="datalist.drug_type == 2">
             <h4>处方中的药品</h4>
             <ul>
                 <li v-for='(val,i) in drop' :key='i'>
-                    <div> <span>{{ val.name }}</span><b>x{{ val.num }}</b></div>
+                    <div> <span>{{ val.name }} ({{ val.gg }}) </span><b>x{{ val.num }}</b></div>
                     <p>用法用量：{{ val.usage }}</p>
                 </li>
             </ul>
         </div>
 
+        <div class="recipedrug" v-show="datalist.drug_type == 1">
+            <h4>山东同仁大药店</h4>
+            <div class="druglist" v-for='(val,i) in drop' :key='i+"_2"'>
+                <div class="dis_f">
+                    <img :src="$https.baseURL+val.img" alt="" />
+                    <dl class="flex1">
+                        <dt class="dis_f dis_sb"><span>{{ val.name }}</span> <span>x{{val.num}}</span> <span>￥{{val.money}}</span></dt>
+                        <dd>{{ val.company }}</dd>
+                    </dl>
+                </div>
+                <p>用法用量：{{ val.usage }}</p>
+            </div>
+        </div>
             
-
+        <ul class="drugAudit" v-show="datalist.drug_type == 1 && datalist.drug_autdit == 1">
+            <li><span>审核药师</span><span><img :src="$https.baseURL+datalist.signpic" alt=""></span></li>
+            <li><span>审核时间</span><span>{{ datalist.drug_audit_time | filterTime }}</span></li>
+            <li v-show="datalist.drug_audit_reason"><span>审核说明</span><span>{{ datalist.drug_audit_reason }}</span></li>
+        </ul>
             
         </div>
              
@@ -129,7 +160,7 @@ export default {
         var _this = this;
         this.userId = this.$route.params.did
         this.$https.post('/mobile/doch5/user_recipe_detail', {'id': this.$route.params.did }, function (res) {
-            // console.log(res.data)
+            console.log(res.data)
             if (res.data.code == 1) {
                 if (res.data) {
                     _this.datalist = res.data.data
@@ -186,22 +217,26 @@ $color: #333;
         overflow: auto;
         .section_head {
             width: 100%;
-        .checks {
-            width: 100%;
-            font-size: rem(32);
-            font-weight:550;
-            height: rem(88);
-            padding: 0 rem(32);
-            line-height: rem(88);
-            > img {
-                width: rem(40);
-                height: rem(40);
-                display: inline-block;
-                vertical-align: middle;
-                margin-top: rem(-5);
-                margin-right: rem(20);
+           
+            .checks {
+                width: 100%;
+                font-size: rem(32);
+                font-weight:550;
+                height: rem(88);
+                padding: 0 rem(32);
+                line-height: rem(88);
+                > img {
+                    width: rem(40);
+                    height: rem(40);
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-top: rem(-5);
+                    margin-right: rem(20);
+                }
             }
-        }
+            
+            
+        
         .blues {
             background-color: #EDF3FE;
             color:#5189F6;
@@ -253,7 +288,7 @@ $color: #333;
 
 
         .detail_con {
-            font-size: rem(28);
+            font-size: rem(26);
             margin-top: rem(22);
             
             .blue {
@@ -266,7 +301,7 @@ $color: #333;
                 background: #fff;
                 li {
                     width: 100%;
-                    padding:rem(20) 0;
+                    padding:rem(15) 0;
                     display: -webkit-flex;
                     display: flex;
                     span:first-child {
@@ -316,24 +351,87 @@ $color: #333;
                     padding:0 rem(30);
                     font-size: rem(27);
                     font-weight: 500;
+                    padding-bottom: rem(20);
+                    border-bottom: 1px solid #eee;
                 }
                 ul {
                     padding: 0 rem(30);
                     li {
                         padding: rem(30) 0;
                         border-bottom:1px solid #F0F2F6;
-                        font-size: rem(28);
+                        font-size: rem(25);
                         div {
-                           
+                            line-height: rem(30);
+                           span {
+                               display: inline-block;
+                               width: 90%;
+                           }
                            b {
                                float: right;
                                color:#808080;
                            }
                         }
                         p {
+                            font-size: rem(23);
                             margin-top: rem(18);
                             color: #808080;
+                            line-height: rem(40);
                         }
+                    }
+                }
+            }
+            .recipedrug {
+                margin-top: rem(15);
+                background-color: #FFF;
+                padding: rem(20);
+                font-size: rem(26);
+                >h4 {
+                    padding-bottom: rem(20);
+                }
+                .druglist {
+                    padding: rem(15);
+                    border-bottom: 1px solid #F0F2F6;
+                    > div {
+                        
+                        img {
+                            width: rem(80);
+                            height: rem(80);
+                            display: block;
+                        }
+                        dl {
+                            padding-left: rem(20);
+                            margin: 0;
+                            dt {
+                                span:nth-child(2) {
+                                    color: #808080;
+                                    margin-top: rem(3);
+                                }
+                            }
+                            dd {
+                               margin-top: rem(8);
+                               font-size: rem(23);
+                               color: #808080;
+                            }
+                        }
+                    }
+                    > p {
+                        font-size: rem(23);
+                        margin-top: rem(10);
+                        color: #808080;
+                        line-height: rem(40);
+                    }
+                }
+            }
+            .drugAudit {
+                margin-top: rem(20);
+                padding: rem(20);
+                background-color: #FFF;
+                font-size: rem(26);
+                li {
+                    line-height: rem(50);
+                    span:first-child {
+                        color: #808080;
+                        margin-right: rem(42);
                     }
                 }
             }

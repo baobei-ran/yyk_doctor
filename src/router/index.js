@@ -44,7 +44,7 @@ const router = new Router({
       component: ShopDetails
     },
     {
-      path: "/detail/:did",
+      path: "/detail/:did",   // 患者处方
       title: "处方详情页",
       name: "detail",
       component: Detail
@@ -56,7 +56,7 @@ const router = new Router({
       component: Download
     },
     {
-      path: "/doctordetail/:did",
+      path: "/doctordetail/:did", //  药店处方
       title: "处方详情页2",
       name: "doctordetail",
       component: DoctorDetail

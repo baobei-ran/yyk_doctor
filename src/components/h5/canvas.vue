@@ -124,7 +124,7 @@ export default {
             var width = shareContent.offsetWidth; //获取dom 宽度
             var height = shareContent.offsetHeight; //获取dom 高度
             var canvas = document.createElement("canvas"); //创建一个canvas节点
-            var scale = window.devicePixelRatio * 4;//获取设备的显示参数
+            var scale = window.devicePixelRatio * 1;//获取设备的显示参数
             canvas.width = width * scale; //定义canvas 宽度 * 缩放
             canvas.height = height * scale; //定义canvas高度 *缩放
             canvas.getContext("2d").scale(scale, scale); //获取context,设置scale 
@@ -132,22 +132,22 @@ export default {
                 backgroundColor:null,
                 scale: scale, // 添加的scale 参数
                 canvas: canvas, //自定义 canvas
-                logging: false, //日志开关，便于查看html2canvas的内部执行流程
-                // width: width, //dom 原始宽度
-                // height: height,
+                logging: true, //日志开关，便于查看html2canvas的内部执行流程
+                width: width, //dom 原始宽度
+                height: height,
                 // allowTaint: true,
                 // useCORS: true // 【重要】开启跨域配置
             };
 
             html2canvas(shareContent, opts).then(function (canvas) {
-                
                 var imgs = canvas.toDataURL("image/png");
                 _this.imgUrl = imgs
-                // cntElem.style['-webkit-transform'] = 'scale(0.5)';
+                cntElem.style['-webkit-transform'] = 'scale(0.5)';
                 cntElem.style['display']='none';
-                var img = new Image()
+                var img = document.createElement("img");
                 img.src = imgs
-                img.style = 'width: 100%;'
+                img.alt = '';
+                img.style = 'width: 100%;max-height: 60%;'
                 document.getElementById('imgsss').appendChild(img)
                 _this.isImg = true
                 document.getElementById('canvas_box').style['background'] = '#000';
@@ -355,7 +355,9 @@ export default {
         position: fixed;
         bottom: rem(30);
         left: 0;
+        z-index: 20000;
         > button {
+            z-index: 20000;
             color: #fff;
             background: rgba(255,255,255, .4);
             padding: rem(5) rem(10);

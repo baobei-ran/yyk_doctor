@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 var baseURL = 'http://test99.yunyikang.cn'; // 测试
 axios.defaults.baseURL = 'http://test99.yunyikang.cn'; // 测试
@@ -19,7 +20,6 @@ var http = axios.create({
       }
     }
     newData = newData.substr(0, newData.length - 1);
-    // console.log(newData)
     return newData;
   }]
 });

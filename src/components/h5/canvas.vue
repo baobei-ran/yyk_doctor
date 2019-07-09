@@ -145,12 +145,11 @@ export default {
                 cntElem.style['-webkit-transform'] = 'scale(0.5)';
                 cntElem.style['display']='none';
                 var img = document.createElement("img");
-                img.src = imgs
-                img.alt = '';
-                img.style = 'width: 100%;max-height: 60%;'
-                document.getElementById('imgsss').appendChild(img)
-                _this.isImg = true
-                document.getElementById('canvas_box').style['background'] = '#000';
+                img.src = imgs;
+                img.style = 'width: 100%;max-height: 60%;';
+                document.getElementById('imgsss').appendChild(img);
+                _this.isImg = true;
+                document.getElementById('canvas_box').style['background-color'] = '#000';
                 _this.$indicator.close();
             });
     
@@ -353,7 +352,7 @@ export default {
         width: 100%;
         text-align: center;
         position: fixed;
-        bottom: rem(30);
+        bottom: rem(20);
         left: 0;
         z-index: 20000;
         > button {

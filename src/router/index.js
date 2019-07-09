@@ -16,7 +16,6 @@ const NewShopDetails = () =>import('../components/h5/newshopdetails.vue');
 Vue.use(Router);
 const router = new Router({
   // mode: "history",
-  // base: process.env.BASE_URL,
   routes: [
     {
       //文章详情Details

@@ -1,13 +1,13 @@
 <template>
+<!-- 药店处方 -->
     <div class="detail">
-        
        <div class="box">
             <div class="section"  id='html'>
                 <div class="checks " v-show='datalist.flag == 0'>
-                    <img src="../../common/img/icon_wsh@2x.png" /> <span>未审核</span>
+                    <img src="../../common/img/icon_wsh@2x.png" /> <span>处方未审核</span>
                 </div>
                 <div class="checks" v-show='datalist.flag == 1'>
-                    <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>审核通过</span>
+                    <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>药师审核通过</span>
                 </div>
                 <div class="checks oringes" v-show='datalist.flag == 2'>
                    <img src="../../common/img/icon_shwtg@2x.png" alt="" /> <span>药师审核未通过</span>
@@ -21,7 +21,7 @@
                             <div class='html_content' ref='html_content' id='htmls'>
                                     <div class="canvas_head">
                                         <ul>
-                                            <li>处方编号：<span>{{ canvasdata.number }}</span></li>
+                                            <li>处方编号：<span>{{ canvasdata.order_code }}</span></li>
                                             <li>处方生成时间：<span>{{ canvasdata.start_time | filterTime }}</span></li>
                                             <li>处方有效时间：<span>{{ canvasdata.undue_time | filterTime }}</span></li>
                                         </ul>
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="check">
                                         <ul>
-                                            <li><span>处方医师：</span><img ref='doctorImg' :src="$https.baseURL+canvasdata.signpic" alt=""></li>
+                                            <li><span>处方医师：</span><img ref='doctorImg' :src="canvasdata.signpic?$https.baseURL+canvasdata.signpic:''" alt=""></li>
                                         </ul>
                                     </div>
                             </div>
@@ -91,11 +91,11 @@
         <div class="recipe">
             <h4>处方中的药品</h4>
             <ul>
-                <li v-for='(val,i) in drop' :key='i'>
+                <li v-for='(val,i) in drop' :key='i+"_1"'>
                     <div> 
-                        <img src="../../common/img/img_dtzs.png" alt="" />
+                        <img :src="val.pic?$https.baseURL+val.pic:''" alt="" />
                         <dl>
-                            <dt><span>{{ val.name }}</span><b>￥{{ val.num }}</b></dt>
+                            <dt><span>{{ val.name }}</span><b>￥{{ val.money }}</b></dt>
                             <dd><span>{{ val.name }}</span><b>x{{ val.num }}</b></dd>
                         </dl>
                     </div>
@@ -113,8 +113,8 @@
             <dd>
                 <span>审核时间：</span><span>{{ datalist.flag_time | filterTime }}</span>
             </dd>
-            <dd>
-                <span>审核说明：</span><span>{{ datalist.flag_time | filterTime }}</span>
+            <dd v-show="datalist.flag_text">
+                <span>审核说明：</span><span>{{ datalist.flag_text }}</span>
             </dd>
         </dl>
            

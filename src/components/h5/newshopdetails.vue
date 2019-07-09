@@ -124,7 +124,6 @@
     </div>
 </template>
 <script>
-import { hybrid } from '../../common/js/app'
 export default {
     name: 'newshopdetails',
     data () {
@@ -159,9 +158,7 @@ export default {
         }
     },
     created () {
-        console.log(window)
         window.add = this.add
-        hybrid.minus = this.minus
         this.status = false
         this.shopStatus = false
     },
@@ -236,10 +233,7 @@ export default {
                 }
             })
         },
-        add (num) {
-            this.numVal = num
-        },
-        minus (num) {
+        add (num) { // 交互获取数量
             this.numVal = num
         },
         handleadd () {

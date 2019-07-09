@@ -1,14 +1,14 @@
 <template>
+<!-- 患者处方 -->
     <div class="detail">
-        
        <div class="box">
             <div class="section_head" >
                 <div class="shou" v-show="datalist.drug_type == 2">
                     <div class="checks blues" v-show='datalist.status == 1'>
-                        <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>开具成功</span>
+                        <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>处方已开具</span>
                     </div>
                     <div class="checks oranges" v-show='datalist.status == 2'>
-                        <img src="../../common/img/icon_cfygq@2x.png" alt="" /> <span>处方过期</span>
+                        <img src="../../common/img/icon_cfygq@2x.png" alt="" /> <span>处方已过期</span>
                     </div>
                 </div>
                 <div class="drugstore" v-show="datalist.drug_type == 1">
@@ -106,10 +106,10 @@
         </div>
 
         <div class="recipedrug" v-show="datalist.drug_type == 1">
-            <h4>山东同仁大药店</h4>
+            <h4>{{ datalist.hname }}</h4>
             <div class="druglist" v-for='(val,i) in drop' :key='i+"_2"'>
                 <div class="dis_f">
-                    <img :src="$https.baseURL+val.img" alt="" />
+                    <img :src="val.img?$https.baseURL+val.img:''" alt="" />
                     <dl class="flex1">
                         <dt class="dis_f dis_sb"><span>{{ val.name }}</span> <span>x{{val.num}}</span> <span>￥{{val.money}}</span></dt>
                         <dd>{{ val.company }}</dd>
@@ -120,7 +120,7 @@
         </div>
             
         <ul class="drugAudit" v-show="datalist.drug_type == 1 && datalist.drug_autdit == 1">
-            <li><span>审核药师</span><span><img :src="$https.baseURL+datalist.signpic" alt=""></span></li>
+            <li><span>审核药师</span><span>{{ datalist.yname }}</span></li>
             <li><span>审核时间</span><span>{{ datalist.drug_audit_time | filterTime }}</span></li>
             <li v-show="datalist.drug_audit_reason"><span>审核说明</span><span>{{ datalist.drug_audit_reason }}</span></li>
         </ul>
@@ -165,17 +165,11 @@ export default {
                 if (res.data) {
                     _this.datalist = res.data.data
                     _this.drop = res.data.drug
+                    _this.canvasdata = res.data.data
+                    _this.durg = res.data.drug
                 }
             } else {
                 _this.datalist = []
-            }
-        })
-
-        _this.$https.post('/mobile/doch5/user_recipe_detail',  {'id': this.$route.params.did }, function (res) {
-            // console.log(res.data)
-            if (res.data.code == 1) {
-                _this.canvasdata = res.data.data
-                _this.durg = res.data.drug
             }
         })
 
@@ -433,6 +427,7 @@ $color: #333;
                         color: #808080;
                         margin-right: rem(42);
                     }
+                    
                 }
             }
         .dl {
@@ -489,7 +484,7 @@ $color: #333;
         width: 200%;
         height: 100%;
         overflow: hidden;
-        font-size: rem(14);
+        font-size: rem(15);
         padding: rem(13) rem(30);
         zoom: 1;
         -webkit-transform-origin-x: 0;    /*定义元素被置于x轴的何处*/

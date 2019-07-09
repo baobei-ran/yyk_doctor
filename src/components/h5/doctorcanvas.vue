@@ -44,8 +44,8 @@
             </div>
             <div class="check">
                 <ul>
-                    <li><span>处方医师：</span><img ref='doctorImg' :src="$https.baseURL+canvasdata.signpic" alt=""></li>
-                    <li v-if='canvasdata.signpic'><span>审核药师：</span><img ref='pharmacist' :src="$https.baseURL+canvasdata.yname_pic" alt=""></li>
+                    <li><span>处方医师：</span><img ref='doctorImg' :src="canvasdata.signpic?$https.baseURL+canvasdata.signpic:''" alt=""></li>
+                    <li v-if='canvasdata.yname_pic'><span>审核药师：</span><img ref='pharmacist' :src="$https.baseURL+canvasdata.yname_pic" alt=""></li>
                 </ul>
             </div>
         </div>
@@ -82,18 +82,6 @@ export default {
             if (res.data.code == 1) {
                 _this.canvasdata = res.data.data
                 _this.durg = res.data.recipe_eat
-                // _this.$nextTick(function () {
-                //     if(_this.canvasdata.signpic) {
-                //         _this.$refs.doctorImg.src = _this.$https.baseURL+_this.canvasdata.signpic
-                //     }
-                //     if (_this.canvasdata.zhang_pic) {
-                //         _this.$refs.chapter.src = _this.$https.baseURL+_this.canvasdata.zhang_pic
-                //     }
-                //     if (_this.canvasdata.yname_pic) {
-                //         _this.$refs.pharmacist.src = _this.$https.baseURL+_this.canvasdata.yname_pic
-                //     }
-                    
-                // })
                 setTimeout(function () {
                     _this.canvasImg()
                 }, 300)  
@@ -104,8 +92,7 @@ export default {
     },
   methods: {
     
-       getClick () {   // 调取安卓
-            console.log(this.imgUrl)
+       getClick () {   // 调取 android 与 ios
             var u = navigator.userAgent;
             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
             var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端

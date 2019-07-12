@@ -94,23 +94,21 @@
           type="number" id='money'
           placeholder="请设置门诊费用"
           v-model="Money"
-          v-enter-number2
         >
       </div>
       <div class="my_group">
         <p class="group_title">预约人数</p>
-        <input
-          type="number"
-          placeholder="请输入可预约人数（人）" id='num_rem'
-          v-model="PeopleCount" 
-          v-enter-number
+        <input type="number" placeholder="请输入可预约人数（人）" id='num_rem'
+          v-model="PeopleCount" v-enter-number
         >
+       
       </div>
     </div>
     <div class="sub_btn"
          @click="SubBtn"
     >保存设置
     </div>
+     
   </div>
 </template>
 
@@ -133,26 +131,30 @@ import { Indicator,  MessageBox} from 'mint-ui';
         RequestData:[], // 盛放点击预约的时间
         Time_all: [],    // 临时存放
         start_Time: '',
-        end_Time: ''
+        end_Time: '',
       }
     },
     mounted: function () {
       this.GetList();
       var _this = this;
-      $("#money").on("input propertychange",function(event) {     // 输入的时候进行验证
-          this.value = this.value.replace(/^([1-9]\d*(\.[\d]{0,2})?|0(\.[\d.]{0,2})?)[\d]*/g, '$1');
-          this.value = this.value.replace(/[^\d\.]/g, '');
-          var money2 = _this.Money.match(/^\d*(\.?\d{0,2})/g)[0]; // 保留小数点后面两位小数
-          _this.Money = money2;
-          // this.value = this.value.replace(".","$#$").replace(/\./g,"").replace("$#$","");
-          // this.value = this.value.replace(/\.{1,}/g,"$2$3");
-      })
-      $("#num_rem").on("input propertychange",function(event) {     // 输入的时候进行验证
-          // this.value = this.value.replace(/[^\.]/g, '');
-          if (_this.PeopleCount <= 0) {
-            _this.PeopleCount = ''
-          }
-      })
+      // $("#money").on("input propertychange",function(event) {     // 输入的时候进行验证
+      //     // this.value = this.value.replace(/^([1-9]\d*(\.[\d]{0,2})?|0(\.[\d.]{0,2})?)[\d]*/g, '$1');
+      //     this.value = this.value.replace(/[^\d\.]/g, '');
+      //      var m = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+      //     var money2 = _this.Money.match(/^\d*(\.?\d{0,2})/g)[0]; // 保留小数点后面两位小数
+      //     _this.Money = money2;
+      //     if (m.test(this.value)) {
+      //         _this.Money = this.value
+      //     }
+      //     // this.value = this.value.replace(".","$#$").replace(/\./g,"").replace("$#$","");
+      //     // this.value = this.value.replace(/\.{1,}/g,"$2$3");
+      // })
+      // $("#num_rem").on("input propertychange",function(event) {     // 输入的时候进行验证
+      //     var reg = /^[1-9]\d*$/;
+      //     if(_this.PeopleCount == 0 || new RegExp(reg).test(_this.PeopleCount) == false) {
+      //       _this.PeopleCount = ''
+      //     }
+      // })
     },
     
     updated: function () {
@@ -559,7 +561,7 @@ import { Indicator,  MessageBox} from 'mint-ui';
             color: #FFFFFF;
             border-color: #FFFFFF;
           }
-          input {
+          input[type=radio] {
             display: none;
           }
         }
@@ -568,7 +570,8 @@ import { Indicator,  MessageBox} from 'mint-ui';
           color: #202020;
           margin-right: .32rem;
         }
-        input {
+        > input[type=number] {
+          display: block;
           font-size: .28rem;
           color: #202020;
           width: 60%;
@@ -593,4 +596,12 @@ import { Indicator,  MessageBox} from 'mint-ui';
       letter-spacing: 2px;
     }
   }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type=number]{
+  -moz-appearance: textfield;
+}
 </style>

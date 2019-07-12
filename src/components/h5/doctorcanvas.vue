@@ -1,7 +1,7 @@
 <template>
     <div id='canvas_box' >
         <div :class="{'image': isImg }" id='imgsss'>
-        <div class='html_content' ref='html_content' id='html'>
+        <div class='html_content' :class="{'canvasPic':canvasStatus }" ref='html_content' id='html'>
             <div class="canvas_head">
                 <ul>
                     <li>处方编号：<span>{{ canvasdata.order_code }}</span></li>
@@ -32,7 +32,7 @@
             <div class="canvas_drug">
                 <p>Rp:</p>
                 <ol v-for='(val,i) in durg' :key='i'>
-                    <li>{{ val.company }} {{val.name}} <span>*{{ val.num }}</span></li>
+                    <li> {{val.name}}<b v-show="val.gg">({{ val.gg }})</b><span>*{{ val.num }}</span></li>
                     <li>用法：<b>{{ val.usage }}</b></li>
                 </ol>
                 <div class="tshi" id='seal'>
@@ -62,6 +62,7 @@ import html2canvas from 'html2canvas'
 export default {
     data () {
         return {
+            canvasStatus: true, // 
             canvasdata: {},
             durg: [],
             ti: '',
@@ -138,6 +139,7 @@ export default {
                 // _this.isImg = true
                 document.getElementById('canvas_box').style['background'] = '#000';
                 _this.$indicator.close();
+                _this.canvasStatus = false
             });
     
         }
@@ -159,6 +161,12 @@ export default {
 
 @function rem($px) {
     @return $px / 50 +rem;
+}
+
+.canvasPic {
+    position: absolute;
+    top: 0;
+    left: -200%;
 }
 
 .flex {
@@ -214,7 +222,6 @@ export default {
         background: #fff;
         width: 200%;
         height: 100%;
-        // overflow: hidden;
         zoom: 1;
         font-size: 18px;
         padding: 20px;

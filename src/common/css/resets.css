@@ -23,14 +23,13 @@ html, body {
   min-width: 320px;
   min-height: 100%;
   margin: 0 auto;
-  /*overflow-x: hidden;*/
 }
 
 * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
-  user-select: none;
 }
-
 .before:before, .after:after {
   display: table;
   content: " ";

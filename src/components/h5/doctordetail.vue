@@ -17,64 +17,60 @@
                 </div>
             <div class="bg_f">
                 <div class="canvas">
-                     
-                            <div class='html_content' ref='html_content' id='htmls'>
-                                    <div class="canvas_head">
-                                        <ul>
-                                            <li>处方编号：<span>{{ canvasdata.order_code }}</span></li>
-                                            <li>处方生成时间：<span>{{ canvasdata.start_time | filterTime }}</span></li>
-                                            <li>处方有效时间：<span>{{ canvasdata.undue_time | filterTime }}</span></li>
-                                        </ul>
-                                    </div>
-                                    <h2>云医康互联网药店电子处方</h2>
-                                    <div class="canvas_user">
-                                        <ul>
-                                            <li>姓名：<span>{{ canvasdata.name }}</span></li>
-                                            <li>性别：
-                                                <span v-show='canvasdata.sex == 0'>男</span>
-                                                <span v-show='canvasdata.sex == 1'>女</span>
-                                            </li>
-                                            <li>年龄：<span>{{ canvasdata.age }}</span></li>
-                                        </ul>
-                                        <ul>
-                                            <li>肝功能：<span v-text='canvasdata.liver != "" ?canvasdata.liver: "正常" '></span></li>
-                                            <li>肾功能：<span v-text='canvasdata.kidney != "" ?canvasdata.kidney: "正常" '></span></li>
-                                            <li>备孕情况：<span v-text='canvasdata.yun != "" ?canvasdata.yun: "无" '></span></li>
-                                        </ul>
-                                        <ul>
-                                            <li>过敏史：<span v-text='canvasdata.allergy != "" ?canvasdata.allergy: "无" '></span></li>
-                                            <li>过往病史：<span v-text='canvasdata.ago != "" ?canvasdata.ago: "无" '></span></li>
-                                        </ul>
-                                        <ul>
-                                            <li>诊断结果：<span>{{ canvasdata.result }}</span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="canvas_drug">
-                                        <p>Rp:</p>
-                                        <ol v-for='(val,i) in durg' :key='i'>
-                                            <li>{{ val.company }} {{val.name}} <span>*{{ val.num }}</span></li>
-                                            <li>用法：<b>{{ val.usage }}</b></li>
-                                        </ol>
-                                        <div class="tshi">
-                                            <img :src="$https.baseURL+canvasdata.seal" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="msg">
-                                        （以下空白，手写无效）
-                                    </div>
-                                    <div class="check">
-                                        <ul>
-                                            <li><span>处方医师：</span><img ref='doctorImg' :src="canvasdata.signpic?$https.baseURL+canvasdata.signpic:''" alt=""></li>
-                                        </ul>
-                                    </div>
+                    <div class='html_content' ref='html_content' id='htmls'>
+                            <div class="canvas_head">
+                                <ul>
+                                    <li>处方编号：<span>{{ canvasdata.order_code }}</span></li>
+                                    <li>处方生成时间：<span>{{ canvasdata.start_time | filterTime }}</span></li>
+                                    <li>处方有效时间：<span>{{ canvasdata.undue_time | filterTime }}</span></li>
+                                </ul>
                             </div>
-        
+                            <h2>云医康互联网药店电子处方</h2>
+                            <div class="canvas_user">
+                                <ul>
+                                    <li>姓名：<span>{{ canvasdata.name }}</span></li>
+                                    <li>性别：
+                                        <span v-show='canvasdata.sex == 0'>男</span>
+                                        <span v-show='canvasdata.sex == 1'>女</span>
+                                    </li>
+                                    <li>年龄：<span>{{ canvasdata.age }}</span></li>
+                                </ul>
+                                <ul>
+                                    <li>肝功能：<span v-text='canvasdata.liver != "" ?canvasdata.liver: "正常" '></span></li>
+                                    <li>肾功能：<span v-text='canvasdata.kidney != "" ?canvasdata.kidney: "正常" '></span></li>
+                                    <li>备孕情况：<span v-text='canvasdata.yun != "" ?canvasdata.yun: "无" '></span></li>
+                                </ul>
+                                <ul>
+                                    <li>过敏史：<span v-text='canvasdata.allergy != "" ?canvasdata.allergy: "无" '></span></li>
+                                    <li>过往病史：<span v-text='canvasdata.ago != "" ?canvasdata.ago: "无" '></span></li>
+                                </ul>
+                                <ul>
+                                    <li>诊断结果：<span>{{ canvasdata.result }}</span></li>
+                                </ul>
+                            </div>
+                            <div class="canvas_drug">
+                                <p>Rp:</p>
+                                <ol v-for='(val,i) in durg' :key='i'>
+                                    <li>{{ val.company }} {{val.name}} <span>*{{ val.num }}</span></li>
+                                    <li>用法：<b>{{ val.usage }}</b></li>
+                                </ol>
+                                <div class="tshi">
+                                    <img :src="$https.baseURL+canvasdata.seal" alt="">
+                                </div>
+                            </div>
+                            <div class="msg">
+                                （以下空白，手写无效）
+                            </div>
+                            <div class="check">
+                                <ul>
+                                    <li><span>处方医师：</span><img ref='doctorImg' :src="canvasdata.signpic?$https.baseURL+canvasdata.signpic:''" alt=""></li>
+                                </ul>
+                            </div>
+                    </div>
                 </div>
                 <span @click='outImg'>查看完整处方</span>
             </div>
 
-
-            
         <div class="detail_con" >        
             <ul>
                 <li><span>处方单号：</span><span>{{ datalist.number }}</span></li>
@@ -83,32 +79,33 @@
             </ul>
             <div class="msg">
                 <div><span >患者信息：</span><span>{{ datalist.name }} <b>|</b> <i v-text='datalist.sex ==0? "男" : "女"' ></i> <b>|</b> {{ datalist.age }}</span></div>
-                <div class="left"><span>患者手机：</span><span>{{ datalist.result }}</span></div>
+                <div class="left"><span>患者手机：</span><span>{{ datalist.phone }}</span></div>
+                <div class="left"><span>患者主诉：</span><span>{{ datalist.disease }}</span></div>
                 <div class="left"><span>诊断结果：</span><span>{{ datalist.result }}</span></div>
                 <div class="left"><span>处理意见：</span><span>{{ datalist.opinion }}</span></div>
             </div>
         </div>
         <div class="recipe">
-            <h4>处方中的药品</h4>
+            <h4>{{ datalist.hospital_name }}</h4>
             <ul>
                 <li v-for='(val,i) in drop' :key='i+"_1"'>
                     <div> 
                         <img :src="val.pic?$https.baseURL+val.pic:''" alt="" />
                         <dl>
-                            <dt><span>{{ val.name }}</span><b>￥{{ val.money }}</b></dt>
-                            <dd><span>{{ val.name }}</span><b>x{{ val.num }}</b></dd>
+                            <dt><span>{{ val.name }}<span v-show="val.gg">({{val.gg}})</span></span><b v-show="val.money > 0">￥{{ val.money }}</b></dt>
+                            <dd><span>{{ val.cname }}</span><b>x{{ val.num }}</b></dd>
                         </dl>
                     </div>
                     <p>用法用量：{{ val.usage }}</p>
                 </li>
             </ul>
-        </div>
-
-        
-            
-        <dl class="dl" v-show='datalist.flag == 1 || datalist.flag == 3'>
+        </div>        
+        <!-- 审核药师字段 -->
+        <dl class="dl" v-if='datalist.flag > 0'>
             <dt>
-                <span>审核药师：</span><img :src="$https.baseURL+datalist.yname_pic" alt="">
+                <span>审核药师：</span>
+                <!-- <img :src="$https.baseURL+datalist.yname_pic" alt=""> -->
+                <span>{{ datalist.yname }}</span>
             </dt>
             <dd>
                 <span>审核时间：</span><span>{{ datalist.flag_time | filterTime }}</span>
@@ -301,6 +298,7 @@ $color: #333;
             
             .msg {
                 width: 100%;
+                padding: rem(10) 0;
                 margin-top: rem(22);
                 background: #fff;
                 > div {
@@ -404,7 +402,7 @@ $color: #333;
             width: 100%;
             margin-top: rem(22);
             background: #fff;
-            padding: rem(20) 0 rem(40);
+            padding: rem(30) 0 rem(40);
             dt {
                 display:-webkit-box;
                 display:-webkit-flex; 
@@ -418,12 +416,15 @@ $color: #333;
                 align-items:center;
                 font-size: rem(28);
                 span {
-                    // border-left: 3px solid #5189F6;
                     padding-left: rem(23);
                     color: #808080;
                     display: block;
                     width: 26%;
-                    }
+                }
+                span:last-child {
+                    padding-left: 0;
+                    color: #333;
+                }
                 img {
                     margin-left: rem(10);
                     width: 50px;
@@ -438,7 +439,7 @@ $color: #333;
                 display:-moz-box; 
                 display:-ms-flexbox; 
                 display:flex;
-                margin-top: rem(40);
+                margin-top: rem(20);
                 margin-left: 0;
                 padding: 0 rem(23);
                 font-size: rem(28);
@@ -455,14 +456,14 @@ $color: #333;
                     }
             }
         }
-      
-    }   
+      }   
     }
     
 
     .canvas {
         width: 100%;
-         background: rgba(0,0,0, .1);
+        background: rgba(0,0,0, .1);
+        font-size: 15px;
         .html_content {
         width: 200%;
         height: 100%;
@@ -483,13 +484,13 @@ $color: #333;
                 display: flex;
                 li {
                     width: 33%;
-                    font-size: rem(8);
+                    font-size: rem(10);
                     letter-spacing: rem(1);
                 }
             }
         }
         h2 {
-            font-size: rem(18);
+            font-size: 18px;
             padding: rem(20);
             text-align: center;
             letter-spacing: rem(5);
@@ -524,7 +525,7 @@ $color: #333;
             }
             >ol {
                 margin-top: rem(20);
-                font-size: rem(7);
+                font-size: 14px;
                 li {
                     line-height: rem(30);
                     span {

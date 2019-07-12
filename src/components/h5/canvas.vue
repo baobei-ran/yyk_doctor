@@ -35,7 +35,7 @@
             <div class="canvas_drug">
                 <p>Rp:</p>
                 <ol v-for='(val,i) in durg' :key='i'>
-                    <li>{{ val.company }} {{val.name}} <span>*{{ val.num }}</span></li>
+                    <li>{{val.name}}<b v-show="val.gg">({{ val.gg }})</b> <span>*{{ val.num }}</span></li>
                     <li>用法：<b>{{ val.usage }}</b></li>
                 </ol>
                 <div class="tshi" id='seal'>
@@ -132,7 +132,7 @@ export default {
                 backgroundColor:null,
                 scale: scale, // 添加的scale 参数
                 canvas: canvas, //自定义 canvas
-                logging: true, //日志开关，便于查看html2canvas的内部执行流程
+                logging: false, //日志开关，便于查看html2canvas的内部执行流程
                 width: width, //dom 原始宽度
                 height: height,
                 // allowTaint: true,
@@ -220,6 +220,9 @@ export default {
     background: #ffff;
     letter-spacing: 1px;
     .html_content {
+        position: absolute;
+        top: 0;
+        left: -200%;
         background: #fff;
         width: 200%;
         height: 100%;

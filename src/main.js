@@ -10,7 +10,7 @@ import "./common/js/rem.js";
 import Axios from "./api/index.js";
 
 import Mint from "mint-ui";
-// require("es6-promise").polyfill()
+require("es6-promise").polyfill()
 Vue.prototype.$https = Axios;
 Vue.config.productionTip = false;
 Vue.use(Mint);

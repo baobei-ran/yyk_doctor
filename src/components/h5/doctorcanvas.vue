@@ -49,10 +49,9 @@
                 </ul>
             </div>
         </div>
-        
+        </div>
         <div class="btn">
             <button @click='getClick'>保存处方</button>
-        </div>
         </div>
     </div>
 </template>
@@ -113,7 +112,7 @@ export default {
             var height = shareContent.offsetHeight; //获取dom 高度
             var canvas = document.createElement("canvas"); //创建一个canvas节点
             // var scale = 4; //定义任意放大倍数 支持小数
-            var scale = window.devicePixelRatio * 2;//获取设备的显示参数
+            var scale = window.devicePixelRatio * 1;//获取设备的显示参数
             canvas.width = width * scale; //定义canvas 宽度 * 缩放
             canvas.height = height * scale; //定义canvas高度 *缩放
             canvas.getContext("2d").scale(scale, scale); //获取context,设置scale 
@@ -136,7 +135,7 @@ export default {
                 // img.style = 'width: 100%;'
                 // cntElem.style['display'] = 'none';
                 // document.getElementById('imgsss').append(img)
-                // _this.isImg = true
+                _this.isImg = true;
                 document.getElementById('canvas_box').style['background'] = '#000';
                 _this.$indicator.close();
                 _this.canvasStatus = false
@@ -199,29 +198,12 @@ export default {
     .image {
         width: 100%;
         height: 100%;
-        display: -webkit-box; 
-        display: -moz-box; 
-        display: -webkit-flex; 
-        display: -moz-flex; 
-        display: -ms-flexbox; 
-        display: flex;
-        -webkit-align-items:center;
-        box-align:center;
-        -moz-box-align:center;
-        -webkit-box-align:center;
-        align-items:center;
-        -webkit-box-pack: center;
-        /* 12版 */
-        -webkit-justify-content: center;
-        -moz-justify-content: center;
-        -ms-justify-content: center;
-        -o-justify-content: center;
-        justify-content: center;
+        overflow-y: scroll;
     }
     .html_content {
         background: #fff;
         width: 200%;
-        height: 100%;
+        min-height: 100%;
         zoom: 1;
         font-size: 18px;
         padding: 20px;

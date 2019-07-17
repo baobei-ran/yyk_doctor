@@ -1,6 +1,6 @@
 <template>
     <div id='canvas_box'>
-        <div :class="{'image': isImg }" id='imgsss'>
+        <div class="image" id='imgsss'>
         <div class='html_content' ref='html_content' id='html'>
             <div class="canvas_head">
                 <ul>
@@ -69,7 +69,7 @@ export default {
             durg: [],
             ti: '',
             imgUrl: '',
-            isImg: false
+            isImg: true
         }
     },
     beforeCreate () {
@@ -119,7 +119,7 @@ export default {
         canvasImg () {
             var _this = this;
             var cntElem = document.getElementById('html');
-            cntElem.style['-webkit-transform'] = 'scale(1)'
+            // cntElem.style['-webkit-transform'] = 'scale(1)'
             var shareContent = cntElem; //需要截图的包裹的（原生的）DOM 对象
             var width = shareContent.offsetWidth; //获取dom 宽度
             var height = shareContent.offsetHeight; //获取dom 高度
@@ -143,12 +143,13 @@ export default {
                 var imgs = canvas.toDataURL("image/png");
                 _this.imgUrl = imgs
                 cntElem.style['-webkit-transform'] = 'scale(0.5)';
-                cntElem.style['display']='none';
-                var img = document.createElement("img");
-                img.src = imgs;
-                img.style = 'width: 100%;max-height: 60%;';
-                document.getElementById('imgsss').appendChild(img);
-                _this.isImg = true;
+                // cntElem.style['display']='none';
+                // var img = document.createElement("img");
+                // img.src = imgs;
+                // img.style = 'width: 100%;max-height: 60%;';
+                // document.getElementById('imgsss').appendChild(img);
+                // _this.isImg = false;
+                cntElem.style.left = '0px';
                 document.getElementById('canvas_box').style['background-color'] = '#000';
                 _this.$indicator.close();
             });
@@ -169,29 +170,9 @@ export default {
 @function rem($px) {
     @return $px / 50 +rem;
 }
-.image {
-        width: 100%;
-        height: 100%;
-        display: -webkit-box; 
-        display: -moz-box; 
-        display: -webkit-flex; 
-        display: -moz-flex; 
-        display: -ms-flexbox; 
-        display: flex;
-        -webkit-align-items:center;
-        box-align:center;
-        -moz-box-align:center;
-        -webkit-box-align:center;
-        align-items:center;
-        -webkit-box-pack: center;
-        /* 12版 */
-        // -webkit-justify-content: center;
-        // -moz-justify-content: center;
-        // -ms-justify-content: center;
-        // -o-justify-content: center;
-        // justify-content: center;
-    }
+
 .flex {
+    width: 100%;
     display:-webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -217,29 +198,32 @@ export default {
     width: 100%;
     height: 100%;
     color: #333;
-    background: #ffff;
+    background: #fff;
     letter-spacing: 1px;
+    .image {
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
     .html_content {
         position: absolute;
         top: 0;
         left: -200%;
         background: #fff;
         width: 200%;
-        height: 100%;
-        // max-width: 200%;
+        min-height: 100%;
         font-size:16px;
         padding: 20px 30px;
         overflow-x: auto;
-        // zoom: 1;
+        zoom: 1;
         -webkit-transform-origin-x: 0;    /*定义元素被置于x轴的何处*/
-        -webkit-transform: scale(0.5);   /*定义元素被缩放*/
+        -webkit-transform: scale(1);   /*定义元素被缩放*/
         .canvas_head {
             width: 100%;
             >ul {            
                 display: -webkit-box;      
                 display: -moz-box;       
                 display: -ms-flexbox;
-                display: -webkit-box;
+                display: -webkit-flex;
                 display: flex;
                 letter-spacing: 1px;
                 li {
@@ -351,6 +335,7 @@ export default {
         }
         
     }
+}
     .btn {
         width: 100%;
         text-align: center;

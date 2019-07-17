@@ -81,8 +81,8 @@
                 <div><span >患者信息：</span><span>{{ datalist.name }} <b>|</b> <i v-text='datalist.sex ==0? "男" : "女"' ></i> <b>|</b> {{ datalist.age }}</span></div>
                 <div class="left"><span>患者手机：</span><span>{{ datalist.phone }}</span></div>
                 <div class="left"><span>患者主诉：</span><span>{{ datalist.disease }}</span></div>
-                <div class="left"><span>诊断结果：</span><span>{{ datalist.result }}</span></div>
-                <div class="left"><span>处理意见：</span><span>{{ datalist.opinion }}</span></div>
+                <div class="left"><span>诊断结果：</span><span v-html="datalist.result"></span></div>
+                <div class="left"><span>处理意见：</span><span v-html="datalist.opinion"></span></div>
             </div>
         </div>
         <div class="recipe">
@@ -158,7 +158,9 @@ export default {
             console.log(res.data)
             if (res.data.code == 1) {
                 if (res.data) {
-                    _this.datalist = res.data.data
+                    _this.datalist = res.data.data;
+                    _this.datalist.result = _this.datalist.result.replace(/--/g, '<br />')
+                    _this.datalist.opinion = _this.datalist.opinion.replace(/--/g, '<br />')
                     _this.drop = res.data.recipe_eat
                 }
             } else {

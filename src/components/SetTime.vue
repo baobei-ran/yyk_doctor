@@ -137,24 +137,24 @@ import { Indicator,  MessageBox} from 'mint-ui';
     mounted: function () {
       this.GetList();
       var _this = this;
-      // $("#money").on("input propertychange",function(event) {     // 输入的时候进行验证
-      //     // this.value = this.value.replace(/^([1-9]\d*(\.[\d]{0,2})?|0(\.[\d.]{0,2})?)[\d]*/g, '$1');
-      //     this.value = this.value.replace(/[^\d\.]/g, '');
-      //      var m = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
-      //     var money2 = _this.Money.match(/^\d*(\.?\d{0,2})/g)[0]; // 保留小数点后面两位小数
-      //     _this.Money = money2;
-      //     if (m.test(this.value)) {
-      //         _this.Money = this.value
-      //     }
-      //     // this.value = this.value.replace(".","$#$").replace(/\./g,"").replace("$#$","");
-      //     // this.value = this.value.replace(/\.{1,}/g,"$2$3");
-      // })
-      // $("#num_rem").on("input propertychange",function(event) {     // 输入的时候进行验证
-      //     var reg = /^[1-9]\d*$/;
-      //     if(_this.PeopleCount == 0 || new RegExp(reg).test(_this.PeopleCount) == false) {
-      //       _this.PeopleCount = ''
-      //     }
-      // })
+      $("#money").on("input propertychange",function(event) {     // 输入的时候进行验证
+          // this.value = this.value.replace(/^([1-9]\d*(\.[\d]{0,2})?|0(\.[\d.]{0,2})?)[\d]*/g, '$1');
+          this.value = this.value.replace(/[^\d\.]/g, '');
+           var m = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+          var money2 = _this.Money.match(/^\d*(\.?\d{0,2})/g)[0]; // 保留小数点后面两位小数
+          _this.Money = money2;
+          if (m.test(this.value)) {
+              _this.Money = this.value
+          }
+          // this.value = this.value.replace(".","$#$").replace(/\./g,"").replace("$#$","");
+          // this.value = this.value.replace(/\.{1,}/g,"$2$3");
+      })
+      $("#num_rem").on("input propertychange",function(event) {     // 输入的时候进行验证
+          var reg = /^[1-9]\d*$/;
+          if(_this.PeopleCount == 0 || new RegExp(reg).test(_this.PeopleCount) == false) {
+            _this.PeopleCount = ''
+          }
+      })
     },
     
     updated: function () {
@@ -221,7 +221,7 @@ import { Indicator,  MessageBox} from 'mint-ui';
         var that = this;
         var SelectDate = [];
         var AllDays = 0;
-        this.$https.post("mobile/doch5/get_time", {'did': this.$route.params.did}, function (res) {
+        this.$https.post("/mobile/doch5/get_time", {'did': this.$route.params.did}, function (res) {
             console.log(res)
             if (res.status >= 200 && res.status < 300) {
               if (res.data.code == 1) {
@@ -318,7 +318,7 @@ import { Indicator,  MessageBox} from 'mint-ui';
           
          MessageBox.confirm('<p style="color:#333;">保存后患者可在你的主页上预约门诊<br/>是否确认保存设定？</p>', {title:'服务提示'}).then(action => {
            console.log(obj)
-            this.$https.postJson("mobile/doch5/set_time", obj, function (res) {
+            this.$https.postJson("/mobile/doch5/set_time", obj, function (res) {
                 if (res.status >= 200 && res.status < 300) {
                   if (res.data.code == 1) {
                     that.$toast({

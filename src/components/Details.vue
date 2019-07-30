@@ -42,7 +42,7 @@
     mounted: function () {
       var ResDate = this.$route.params;
       var that = this;
-      this.$https.post("mobile/doch5/articledata", ResDate, function (response) {
+      this.$https.post("/mobile/doch5/articledata", ResDate, function (response) {
             console.log(response);
            if (response.status >= 200 && response.status < 300) {
             console.log(response);

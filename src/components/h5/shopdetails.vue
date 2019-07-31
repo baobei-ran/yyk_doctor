@@ -5,7 +5,7 @@
             <div class="swiper-container">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide" v-for='(val,i) in pics' :key='i'>
-                        <img :src="$https.baseURL+val.img" alt="">
+                        <img :src="$https.baseURL+val.img" alt="" />
                     </div>
                 </div>
                 <div class="swiper-pagination"></div>
@@ -65,7 +65,7 @@
         </div>
         <div class="cont_img">
             <ul>
-                <li v-for='(val,i) in imgs' :key='i' ><img :src="$https.baseURL+val.img" alt=""></li>
+                <li v-for='(val,i) in imgs' :key='i' ><img :src="$https.baseURL+val.img" alt="" /></li>
             </ul>
         </div>
         <!-- <div class="cont_img">
@@ -75,7 +75,7 @@
         </div> -->
     </div>
     <div class="empty_2" v-if='!flag'>
-        <img src="../../common/img/icon/default.png" alt="">
+        <img src="../../common/img/icon/default.png" alt="" />
         <p class="Ft-S28">您查看的商品已被删除，请查看其他商品。</p>
     </div>
     </div>
@@ -208,7 +208,7 @@ $color: #333;
                 width: 100%;
                 padding: 0 0.21rem;
                 margin: 0.4rem 0;
-                -webkit-display: flex;
+                display: -webkit-flex;
                 display: flex;
 
                 span:first-child {

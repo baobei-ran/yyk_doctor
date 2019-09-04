@@ -114,16 +114,8 @@
                 <span>审核说明：</span><span>{{ datalist.flag_text }}</span>
             </dd>
         </dl>
-           
-
-            
         </div>
-             
-
-
-
        </div>
-       
     </div>
 </template>
 <script>
@@ -161,22 +153,15 @@ export default {
                     _this.datalist = res.data.data;
                     _this.datalist.result = _this.datalist.result.replace(/--/g, '<br />')
                     _this.datalist.opinion = _this.datalist.opinion.replace(/--/g, '<br />')
-                    _this.drop = res.data.recipe_eat
+                    _this.drop = res.data.recipe_eat;
+                    _this.canvasdata = res.data.data
+                    _this.durg = res.data.recipe_eat
                 }
             } else {
                 _this.datalist = []
                 _this.drop = []
             }
         })
-
-        _this.$https.post('/mobile/Doch5/recipe_look',  {'id': this.$route.params.did }, function (res) {
-            // console.log(res.data)
-            if (res.data.code == 1) {
-                _this.canvasdata = res.data.data
-                _this.durg = res.data.recipe_eat
-            }
-        })
-
     },
    methods: {       
        outImg () {

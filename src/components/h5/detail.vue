@@ -99,7 +99,7 @@
             <h4>处方中的药品</h4>
             <ul>
                 <li v-for='(val,i) in drop' :key='i'>
-                    <div> <span>{{ val.name }} ({{ val.gg }}) </span><b>x{{ val.num }}</b></div>
+                    <div> <span>{{ val.name }} <i v-if='val.gg'>({{ val.gg }})</i> </span><b>x{{ val.num }}</b></div>
                     <p>用法用量：{{ val.usage }}</p>
                 </li>
             </ul>

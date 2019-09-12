@@ -3,7 +3,7 @@
     <div class="detail">
        <div class="box">
             <div class="section_head" >
-                <div class="shou" v-show="datalist.drug_type == 2">
+                <div class="shou" v-if="datalist.drug_type == 2">
                     <div class="checks blues" v-show='datalist.status == 1'>
                         <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>处方已开具</span>
                     </div>
@@ -11,7 +11,7 @@
                         <img src="../../common/img/icon_cfygq@2x.png" alt="" /> <span>处方已过期</span>
                     </div>
                 </div>
-                <div class="drugstore" v-show="datalist.drug_type == 1">
+                <div class="drugstore" v-if="datalist.drug_type == 1">
                     <div class="checks blues" v-show='datalist.drug_autdit == 0'>
                         <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>处方未审核</span>
                     </div>
@@ -24,64 +24,41 @@
                 </div>
             <div class="bg_f">
                 <div class="canvas">
-                     
-                            <div class='html_content' ref='html_content' id='htmls'>
-                                    <div class="canvas_head">
-                                        <ul>
-                                            <li>处方编号：<span>{{ canvasdata.number }}</span></li>
-                                            <li>处方生成时间：<span>{{ canvasdata.start_time | filterTime }}</span></li>
-                                            <li>处方有效时间：<span>{{ canvasdata.undue_time | filterTime }}</span></li>
-                                        </ul>
-                                    </div>
-                                    <h2>云医康互联网药店电子处方</h2>
-                                    <div class="canvas_user">
-                                        <ul>
-                                            <li>姓名：<span>{{ canvasdata.name }}</span></li>
-                                            <li>性别：
-                                                <span v-show='canvasdata.sex == 1'>男</span>
-                                                <span v-show='canvasdata.sex == 2'>女</span>
-                                            </li>
-                                            <li>年龄：<span>{{ canvasdata.age }}</span></li>
-                                        </ul>
-                                        <ul>
-                                            <li>肝功能：<span v-text='canvasdata.liver != "" ?canvasdata.liver: "正常" '></span></li>
-                                            <li>肾功能：<span v-text='canvasdata.kidney != "" ?canvasdata.kidney: "正常" '></span></li>
-                                            <li>备孕情况：<span v-text='canvasdata.yun != "" ?canvasdata.yun: "无" '></span></li>
-                                        </ul>
-                                        <ul>
-                                            <li>过敏史：<span v-text='canvasdata.allergy != "" ?canvasdata.allergy: "无" '></span></li>
-                                            <li>过往病史：<span v-text='canvasdata.ago != "" ?canvasdata.ago: "无" '></span></li>
-                                        </ul>
-                                        <ul>
-                                            <li>诊断结果：<span>{{ canvasdata.result }}</span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="canvas_drug">
-                                        <p>Rp:</p>
-                                        <ol v-for='(val,i) in durg' :key='i'>
-                                            <li>{{ val.company }} {{val.name}} <span>*{{ val.num }}</span></li>
-                                            <li>用法：<b>{{ val.usage }}</b></li>
-                                        </ol>
-                                        <div class="tshi">
-                                            <img :src="$https.baseURL+canvasdata.seal" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="msg">
-                                        （以下空白，手写无效）
-                                    </div>
-                                    <div class="check">
-                                        <ul>
-                                            <li><span>处方医师：</span><img ref='doctorImg' :src="$https.baseURL+canvasdata.signpic" alt=""></li>
-                                        </ul>
-                                    </div>
-                            </div>
-        
+                    <div class='html_content' ref='html_content' id='htmls'>
+                        <div class="canvas_head">
+                            <ul>
+                                <li>处方编号：<span>{{ canvasdata.number }}</span></li>
+                                <li>处方生成时间：<span>{{ canvasdata.start_time | filterTime }}</span></li>
+                                <li>处方有效时间：<span>{{ canvasdata.undue_time | filterTime }}</span></li>
+                            </ul>
+                        </div>
+                        <h2>云医康互联网药店电子处方</h2>
+                        <div class="canvas_user">
+                            <ul>
+                                <li>姓名：<span>{{ canvasdata.name }}</span></li>
+                                <li>性别：
+                                    <span v-show='canvasdata.sex == 1'>男</span>
+                                    <span v-show='canvasdata.sex == 2'>女</span>
+                                </li>
+                                <li>年龄：<span>{{ canvasdata.age }}</span></li>
+                            </ul>
+                            <ul>
+                                <li>肝功能：<span v-text='canvasdata.liver != "" ?canvasdata.liver: "正常" '></span></li>
+                                <li>肾功能：<span v-text='canvasdata.kidney != "" ?canvasdata.kidney: "正常" '></span></li>
+                                <li>备孕情况：<span v-text='canvasdata.yun != "" ?canvasdata.yun: "无" '></span></li>
+                            </ul>
+                            <ul>
+                                <li>过敏史：<span v-text='canvasdata.allergy != "" ?canvasdata.allergy: "无" '></span></li>
+                                <li>过往病史：<span v-text='canvasdata.ago != "" ?canvasdata.ago: "无" '></span></li>
+                            </ul>
+                            <ul>
+                                <li style="width: 100%;">诊断结果：<span style="display:inline-block;width: 80%;">{{ canvasdata.result }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <span @click='outImg'>查看完整处方</span>
             </div>
-
-
-            
         <div class="detail_con" >        
             <ul>
                 <li><span >开具医生：</span><span>{{ datalist.true_name }}</span></li>
@@ -95,7 +72,7 @@
                 
             </div>
         </div>
-        <div class="recipe" v-show="datalist.drug_type == 2">
+        <div class="recipe" v-if="datalist.drug_type == 2">
             <h4>处方中的药品</h4>
             <ul>
                 <li v-for='(val,i) in drop' :key='i'>
@@ -104,8 +81,7 @@
                 </li>
             </ul>
         </div>
-
-        <div class="recipedrug" v-show="datalist.drug_type == 1">
+        <div class="recipedrug" v-if="datalist.drug_type == 1">
             <h4>{{ datalist.hname }}</h4>
             <div class="druglist" v-for='(val,i) in drop' :key='i+"_2"'>
                 <div class="dis_f">
@@ -118,21 +94,16 @@
                 <p>用法用量：{{ val.usage }}</p>
             </div>
         </div>
-            
-        <ul class="drugAudit" v-show="datalist.drug_type == 1 && datalist.drug_autdit == 1">
+        <ul class="drugAudit" v-if="datalist.drug_type == 1 && datalist.drug_autdit == 1">
             <li><span>审核药师</span><span>{{ datalist.yname }}</span></li>
             <li><span>审核时间</span><span>{{ datalist.drug_audit_time | filterTime }}</span></li>
             <li v-show="datalist.drug_audit_reason"><span>审核说明</span><span>{{ datalist.drug_audit_reason }}</span></li>
         </ul>
-            
         </div>
-             
        </div>
-       
     </div>
 </template>
 <script>
-
 export default {
     data () {
         return {
@@ -192,26 +163,14 @@ $color: #333;
     width: 100%;
     height: 100%;
     color: $color;
-    display: -webkit-flex;
-    display: flex;
-    flex-direction: column;
     background-color: #F9F9F9;
     font-size: rem(16);
     color: #333;
     padding-bottom: rem(22);
-    
     .box {
         width: 100%;
-        -prefix-box-flex: 1; 
-        -webkit-box-flex: 1; 
-        -webkit-flex: 1; 
-        -moz-box-flex: 1; 
-        -ms-flex: 1; 
-        flex: 1; 
-        overflow: auto;
         .section_head {
             width: 100%;
-           
             .checks {
                 width: 100%;
                 font-size: rem(32);
@@ -229,7 +188,13 @@ $color: #333;
                 }
             }
             
-            
+        .oranges {
+            background-color: #FFFDF2EE;
+            color: #EC8158FF;
+            span {
+                color: #EC8158FF;
+            }
+        }
         
         .blues {
             background-color: #EDF3FE;
@@ -238,13 +203,7 @@ $color: #333;
                 color:#5189F6;
             }
         }
-        .oranges {
-            background-color: #FFFDF2EE;
-            color: #EC8158FF;
-            span {
-                color: #EC8158FF;
-            }
-        }
+        
         .bg_f {
             background-color: #fff;
             padding: rem(30);
@@ -262,7 +221,7 @@ $color: #333;
                 bottom: rem(13+32);
                 left: 50%;
                 display: block;
-                font-size: rem(20);
+                font-size: rem(24);
                 width: rem(240);
                 border-radius: rem(25);
                 background: rgb(0,0,0);
@@ -479,12 +438,11 @@ $color: #333;
 
     .canvas {
         width: 100%;
-        //  background: rgba(0,0,0, .1);
         .html_content {
         width: 200%;
         height: 100%;
         overflow: hidden;
-        font-size: rem(15);
+        font-size: rem(24);
         padding: rem(13) rem(30);
         zoom: 1;
         -webkit-transform-origin-x: 0;    /*定义元素被置于x轴的何处*/
@@ -500,16 +458,16 @@ $color: #333;
                 display: flex;
                 li {
                     width: 33%;
-                    font-size: rem(8);
+                    font-size: rem(20);
                     letter-spacing: rem(1);
                 }
             }
         }
         h2 {
-            font-size: rem(18);
-            padding: rem(20);
+            font-size: rem(28);
+            padding: rem(15);
             text-align: center;
-            font-weight: 600;
+            font-weight: 800;
             letter-spacing: rem(5);
         }
         .canvas_user {
@@ -523,83 +481,16 @@ $color: #333;
                 display: -ms-flexbox;
                 display: -webkit-box;
                 display: flex;
-                font-size: rem(8);
+                font-size: rem(24);
                 li {
                     width: 33%;
-                    height: rem(30);
-                    line-height: rem(30);
+                    padding: rem(4) 0;
                     letter-spacing: rem(3);
                 }
             }
         }
-        .canvas_drug {
-            width: 100%;
-            padding: rem(20) 0;
-            position: relative;
-            >p {
-                font-weight: 550;
-                font-size: rem(12);
-            }
-            >ol {
-                margin-top: rem(20);
-                font-size: rem(7);
-                li {
-                    line-height: rem(30);
-                    span {
-                        margin-left: rem(14);
-                    }
-                }
-            }
-            .tshi {
-                position: absolute;
-                right: rem(30);
-                bottom: rem(10);
-                font-size: rem(5);
-                img {
-                    width: rem(100);
-                    height: rem(100);
-                    border-radius: 50%;
-                }
-            }
-        }
-        .msg {
-            text-align: center;
-            font-size: rem(7);
-            line-height: rem(14);
-            padding-bottom: rem(30);
-        }
-        .check {
-            margin-top: rem(30);
-            width: 100%;
-            font-size: rem(8);
-            overflow: hidden;
-           > ul {
-                           
-                display: -webkit-box;      
-                display: -moz-box;       
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
-                li {
-                    width: 50%;
-                    display: -webkit-box;      
-                    display: -moz-box;       
-                    display: -ms-flexbox;
-                    display: -webkit-flex;
-                    display: flex;
-                    > img {
-                        max-width: rem(40);
-                        height: rem(25);
-                        display: block;
-                    }
-                }
-            }
-        }
-        
     }
     }
-    
-    
 }
 
 </style>

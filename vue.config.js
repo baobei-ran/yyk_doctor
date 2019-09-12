@@ -54,7 +54,18 @@ module.exports = {  // production 是代表线上的意思
     if (debug) {
       // 本地开发配置
     } else {
-      // 生产开发配置
+      config.module
+      .rule('images')
+      .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
+      .use('image-webpack-loader')
+      .loader('image-webpack-loader')
+      .options({ bypassOnDebug: true })
+      .end()
+      // 用cdn方式引入
+      config.externals({
+        'vue': 'Vue',
+        'vue-router': 'VueRouter',
+      })
     }
   },
   parallel: require("os").cpus().length > 1, // 构建时开启多进程处理babel编译
@@ -63,7 +74,7 @@ module.exports = {  // production 是代表线上的意思
   pwa:{ // 单页插件相关配置 https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
   },
   devServer: {
-    open: true,
+    open: false,
     // host: "192.168.1.8",
     host: "192.168.8.107",
     // host: "localhost",

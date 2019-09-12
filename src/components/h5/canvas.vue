@@ -1,7 +1,8 @@
 <template>
-    <div id='canvas_box'>
-        <div class="image" id='imgsss'>
-        <div class='html_content' ref='html_content' id='html'>
+    <div id='canvas_box' class="dis_f flex_c">
+        <div class="image-box flex1">
+        <div class="image" ref='imageBox' id='imgsss' :class="{'flex':!isPos}">
+        <div class='html_content' :class="{'pos_abs': isPos}" ref='html_content' id='html'>
             <div class="canvas_head">
                 <ul>
                     <li>处方编号：<span>{{ canvasdata.number }}</span></li>
@@ -28,8 +29,8 @@
                     <li>过敏史：<span v-text='canvasdata.allergy != "" ?canvasdata.allergy: "无" '></span></li>
                     <li>过往病史：<span v-text='canvasdata.ago != "" ?canvasdata.ago: "无" '></span></li>
                 </ul>
-                <ul>
-                    <li>诊断结果：<span>{{ canvasdata.result }}</span></li>
+                <ul class="result">
+                    <li><span>诊断结果：</span><span>{{ canvasdata.result }}</span></li>
                 </ul>
             </div>
             <div class="canvas_drug">
@@ -53,10 +54,10 @@
             </div>
         </div>
         </div>
+</div>
         <div class="btn">
-            <button @click='giveAndroid'>下载处方</button>
+            <button @click='handleClick'>下载处方</button>
         </div>
-        
     </div>
 </template>
 
@@ -69,7 +70,8 @@ export default {
             durg: [],
             ti: '',
             imgUrl: '',
-            isImg: true
+            isImg: true,
+            isPos: true,
         }
     },
     beforeCreate () {
@@ -92,11 +94,12 @@ export default {
                 if (_this.canvasdata.seal) {
                     _this.$refs.chapter.src = _this.$https.baseURL+_this.canvasdata.seal
                 }
-                
+                var ts = setTimeout(() => {
+                    _this.canvasImg();
+                    clearTimeout(ts)
+                }, 300)  
             })
-            setTimeout(() => {
-                _this.canvasImg()
-            }, 300)  
+            
         }
     })
 
@@ -104,11 +107,11 @@ export default {
     
  },
   methods: {
-        giveAndroid () {   // 调取安卓 和 ios
+        handleClick () {   // 调取安卓 和 ios 事件
             console.log(this.imgUrl)
             var u = navigator.userAgent;
-            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
             if (isAndroid) {
                 android.downLoad(this.imgUrl)
             }
@@ -119,10 +122,8 @@ export default {
         canvasImg () {
             var _this = this;
             var cntElem = document.getElementById('html');
-            // cntElem.style['-webkit-transform'] = 'scale(1)'
-            var shareContent = cntElem; //需要截图的包裹的（原生的）DOM 对象
-            var width = shareContent.offsetWidth; //获取dom 宽度
-            var height = shareContent.offsetHeight; //获取dom 高度
+            var width = cntElem.offsetWidth; //获取dom 宽度
+            var height = cntElem.offsetHeight; //获取dom 高度
             var canvas = document.createElement("canvas"); //创建一个canvas节点
             var scale = window.devicePixelRatio * 1;//获取设备的显示参数
             canvas.width = width * scale; //定义canvas 宽度 * 缩放
@@ -130,33 +131,29 @@ export default {
             canvas.getContext("2d").scale(scale, scale); //获取context,设置scale 
             var opts = {
                 backgroundColor:null,
-                scale: scale, // 添加的scale 参数
+                scale: scale?scale:1, // 添加的scale 参数
                 canvas: canvas, //自定义 canvas
                 logging: false, //日志开关，便于查看html2canvas的内部执行流程
                 width: width, //dom 原始宽度
                 height: height,
                 // allowTaint: true,
-                // useCORS: true // 【重要】开启跨域配置
+                // useCORS: true // 跨域配置
             };
-
-            html2canvas(shareContent, opts).then(function (canvas) {
+            html2canvas(cntElem, opts).then(function (canvas) {
                 var imgs = canvas.toDataURL("image/png");
-                _this.imgUrl = imgs
-                cntElem.style['-webkit-transform'] = 'scale(0.5)';
-                // cntElem.style['display']='none';
-                // var img = document.createElement("img");
-                // img.src = imgs;
-                // img.style = 'width: 100%;max-height: 60%;';
-                // document.getElementById('imgsss').appendChild(img);
-                // _this.isImg = false;
-                cntElem.style.left = '0px';
+                _this.imgUrl = imgs;
+                // cntElem.style['-webkit-transform'] = 'scale(0.5)';
+                // cntElem.style['-webkit-transform-origin-y'] = 'top';
+                _this.isPos = false;
                 document.getElementById('canvas_box').style['background-color'] = '#000';
+                var box = _this.$refs.imageBox;
+                box.innerHTML = '<img src="'+imgs+'" alt="" />'
+                // var h = window.getComputedStyle(cntElem).height;
+                // h = h.replace(/px/, '');
+                // box.style['height'] =  h / 2+'px';
                 _this.$indicator.close();
             });
-    
         }
-      
-
     },
     beforeDestroy () {
         this.$indicator.close();
@@ -171,50 +168,57 @@ export default {
     @return $px / 50 +rem;
 }
 
-.flex {
-    width: 100%;
-    display:-webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-orient:vertical;
-    -webkit-box-direction:normal;
-    -moz-box-orient:vertical;
-    -moz-box-direction:normal;
-    flex-direction:column;
-    -webkit-flex-direction:column;
-    align-items:center;
-    -webkit-align-items:center;
-    box-align:center;
-    -moz-box-align:center;
-    -webkit-box-align:center;
-    -webkit-box-pack: center;
-    -moz-justify-content: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-}
+
 #canvas_box {
     width: 100%;
     height: 100%;
     color: #333;
     background: #fff;
     letter-spacing: 1px;
+    position: relative;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    .flex {
+        width: 100%;
+        display:-webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items:center;
+        -webkit-align-items:center;
+        box-align:center;
+        -moz-box-align:center;
+        -webkit-box-align:center;
+        -webkit-box-pack: center;
+        -moz-justify-content: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+    .image-box {
+        width: 100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
     .image {
         width: 100%;
         height: 100%;
-        overflow-y: scroll;
-    .html_content {
+        >img {
+            width: 100%;
+        }
+    .pos_abs {
         position: absolute;
         top: 0;
         left: -200%;
+    }
+    .html_content {
         background: #fff;
         width: 200%;
-        min-height: 100%;
         font-size:16px;
         padding: 20px 30px;
-        overflow-x: auto;
+        min-height: 50%;
         zoom: 1;
+        // -webkit-transform-origin-y: 0;
         -webkit-transform-origin-x: 0;    /*定义元素被置于x轴的何处*/
         -webkit-transform: scale(1);   /*定义元素被缩放*/
         .canvas_head {
@@ -228,13 +232,13 @@ export default {
                 letter-spacing: 1px;
                 li {
                     width: 33%;
-                    font-size: 10px;
+                    font-size: 12px;
                 }
             }
         }
         h2 {
             font-size: rem(20);
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             letter-spacing: rem(3);
         }
@@ -248,13 +252,26 @@ export default {
                 display: -ms-flexbox;
                 display: -webkit-box;
                 display: flex;
-                font-size: rem(10);
                 li {
                     width: 33%;
-                    height: 30px;
-                    line-height: 30px;
+                    padding: rem(4) 0;
                     font-size: rem(16);
                     letter-spacing: rem(2);
+                }
+            }
+            ul.result {
+                width: 100%;
+                li {
+                    width: 100%;
+                    span {
+                        display: inline-block;
+                        line-height: 26px;
+                    }
+                    span:last-child {
+                        width: 80%;
+                        line-height: 26px;
+                        vertical-align: top;
+                    }
                 }
             }
         }
@@ -267,7 +284,7 @@ export default {
                 font-size: rem(12);
             }
             >ol {
-                margin-top: rem(20);
+                margin-top: rem(15);
                 font-size: rem(10);
                 li {
                     line-height: 30px;
@@ -296,11 +313,11 @@ export default {
             text-align: center;
             font-size: rem(10);
             line-height: 15px;
-            padding-bottom: 20px;
+            padding-bottom: 10px;
             letter-spacing: 3px;
         }
         .check {
-            margin-top: 30px;
+            margin-top: 10px;
             width: 100%;
             font-size: rem(14);
             overflow: hidden;
@@ -339,14 +356,14 @@ export default {
     .btn {
         width: 100%;
         text-align: center;
-        position: fixed;
-        bottom: rem(20);
+        font-size: rem(16);
+        position: absolute;
+        z-index: 1000;
         left: 0;
-        z-index: 20000;
+        bottom: rem(40);
         > button {
-            z-index: 20000;
             color: #fff;
-            background: rgba(255,255,255, .4);
+            background-color: #999;
             padding: rem(5) rem(10);
             border-radius: rem(3);
         }

@@ -3,10 +3,10 @@
     <div class="detail">
        <div class="box">
             <div class="section"  id='html'>
-                <div class="checks " v-show='datalist.flag == 0'>
+                <div class="checks blue" v-show='datalist.flag == 0'>
                     <img src="../../common/img/icon_wsh@2x.png" /> <span>处方未审核</span>
                 </div>
-                <div class="checks" v-show='datalist.flag == 1'>
+                <div class="checks blue" v-show='datalist.flag == 1'>
                     <img src="../../common/img/icon_shtg@2x.png" alt="" /> <span>药师审核通过</span>
                 </div>
                 <div class="checks oringes" v-show='datalist.flag == 2'>
@@ -44,26 +44,8 @@
                                     <li>过敏史：<span v-text='canvasdata.allergy != "" ?canvasdata.allergy: "无" '></span></li>
                                     <li>过往病史：<span v-text='canvasdata.ago != "" ?canvasdata.ago: "无" '></span></li>
                                 </ul>
-                                <ul>
-                                    <li>诊断结果：<span>{{ canvasdata.result }}</span></li>
-                                </ul>
-                            </div>
-                            <div class="canvas_drug">
-                                <p>Rp:</p>
-                                <ol v-for='(val,i) in durg' :key='i'>
-                                    <li>{{ val.company }} {{val.name}} <span>*{{ val.num }}</span></li>
-                                    <li>用法：<b>{{ val.usage }}</b></li>
-                                </ol>
-                                <div class="tshi">
-                                    <img :src="$https.baseURL+canvasdata.seal" alt="">
-                                </div>
-                            </div>
-                            <div class="msg">
-                                （以下空白，手写无效）
-                            </div>
-                            <div class="check">
-                                <ul>
-                                    <li><span>处方医师：</span><img ref='doctorImg' :src="canvasdata.signpic?$https.baseURL+canvasdata.signpic:''" alt=""></li>
+                                <ul class="result">
+                                    <li><span>诊断结果：</span><span>{{ canvasdata.result }}</span></li>
                                 </ul>
                             </div>
                     </div>
@@ -181,32 +163,19 @@ $color: #333;
     width: 100%;
     height: 100%;
     color: $color;
-    display: -webkit-flex;
-    display: flex;
-    flex-direction: column;
     background-color: #F9F9F9;
-    font-size: rem(16);
+    font-size: rem(24);
     color: #333;
     padding-bottom: rem(22);
-    
     .box {
         width: 100%;
-        -prefix-box-flex: 1; 
-        -webkit-box-flex: 1; 
-        -webkit-flex: 1; 
-        -moz-box-flex: 1; 
-        -ms-flex: 1; 
-        flex: 1; 
-        overflow: auto;
-        .section {
+    .section {
         width: 100%;
-        > .checks {
+        .checks {
             height: rem(88);
             line-height: rem(88);
             padding:0 rem(32);
-            background-color: #EDF3FE;
             font-size: rem(32);
-            color:#5189F6;
             > img {
                 width: rem(40);
                 height: rem(40);
@@ -214,6 +183,10 @@ $color: #333;
                 margin-right: rem(22);
                 vertical-align: middle;
             }
+        }
+        .blue {
+            background-color: #EDF3FE;
+            color:#5189F6;
         }
         .oringes {
             background-color: #FFFDF2EE;
@@ -237,7 +210,7 @@ $color: #333;
                 left: 50%;
                 display: block;
                 width: rem(240);
-                font-size: rem(20);
+                font-size: rem(22);
                 border-radius: rem(25);
                 background: rgb(0,0,0);
                 opacity: .5;
@@ -251,10 +224,6 @@ $color: #333;
                 transform: translateX(-50%); 
             }
         }
-       
-        
-
-
         .detail_con {
             font-size: rem(28);
             .blue {
@@ -455,7 +424,7 @@ $color: #333;
         width: 200%;
         height: 100%;
         overflow: hidden;
-        font-size: rem(14);
+        font-size: rem(16);
         padding: rem(13) rem(30);
         zoom: 1;
         -webkit-transform-origin-x: 0;    /*定义元素被置于x轴的何处*/
@@ -471,13 +440,13 @@ $color: #333;
                 display: flex;
                 li {
                     width: 33%;
-                    font-size: rem(10);
+                    font-size: rem(20);
                     letter-spacing: rem(1);
                 }
             }
         }
         h2 {
-            font-size: 18px;
+            font-size: rem(28);
             padding: rem(20);
             text-align: center;
             letter-spacing: rem(5);
@@ -493,84 +462,29 @@ $color: #333;
                 display: -ms-flexbox;
                 display: -webkit-box;
                 display: flex;
-                font-size: rem(8);
+                font-size: rem(20);
                 li {
                     width: 33%;
-                    height: rem(30);
-                    line-height: rem(30);
+                    padding: rem(4) 0;
                     letter-spacing: rem(1.5);
                 }
             }
-        }
-        .canvas_drug {
-            width: 100%;
-            padding: rem(20) 0;
-            position: relative;
-            >p {
-                font-weight: 550;
-                font-size: rem(12);
-            }
-            >ol {
-                margin-top: rem(20);
-                font-size: 14px;
+            .result {
                 li {
-                    line-height: rem(30);
+                    width: 100%;
                     span {
-                        margin-left: rem(14);
+                        display: inline-block;
+                        line-height: rem(30);
                     }
-                }
-            }
-            .tshi {
-                position: absolute;
-                right: rem(30);
-                bottom: rem(10);
-                font-size: rem(5);
-                img {
-                    width: rem(100);
-                    height: rem(100);
-                    border-radius: 50%;
-                }
-            }
-        }
-        .msg {
-            text-align: center;
-            font-size: rem(7);
-            line-height: rem(14);
-            padding-bottom: rem(30);
-        }
-        .check {
-            margin-top: rem(30);
-            width: 100%;
-            font-size: rem(8);
-            overflow: hidden;
-           > ul {
-                           
-                display: -webkit-box;      
-                display: -moz-box;       
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
-                li {
-                    width: 50%;
-                                
-                    display: -webkit-box;      
-                    display: -moz-box;       
-                    display: -ms-flexbox;
-                    display: -webkit-flex;
-                    display: flex;
-                    > img {
-                        max-width: rem(40);
-                        height: rem(25);
-                        display: block;
+                    span:last-child {
+                        width: 80%;
+                        vertical-align: top;
                     }
                 }
             }
         }
-        
+      }
     }
-    }
-    
-    
 }
 
 </style>

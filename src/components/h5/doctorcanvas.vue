@@ -1,6 +1,7 @@
 <template>
-    <div id='canvas_box' >
-        <div :class="{'image': isImg }" id='imgsss'>
+    <div id='canvas_box' class="dis_f flex_c" >
+        <div class="image-box flex1" :class='{"flex":!canvasStatus }'>
+        <div class='image' ref='imageBox' id='imgsss'>
         <div class='html_content' :class="{'canvasPic':canvasStatus }" ref='html_content' id='html'>
             <div class="canvas_head">
                 <ul>
@@ -25,8 +26,9 @@
                 
                     <li>过敏史：<span v-text='canvasdata.allergy != "" ?canvasdata.allergy: "无" '></span></li>
                     <li>过往病史：<span v-text='canvasdata.ago != "" ?canvasdata.ago: "无" '></span></li>
-                
-                    <li>诊断结果：<span>{{ canvasdata.result }}</span></li>
+                </ul>
+                <ul class="result">
+                    <li><span>诊断结果：</span><span>{{ canvasdata.result }}聚餐啥的军电视剧点击SVN的方式均价的发v东方健康SVN京东方女的离开发v那地方发v框架的妇女大富科技女的反馈女地方地方考虑那地方考虑那地方</span></li>
                 </ul>
             </div>
             <div class="canvas_drug">
@@ -44,14 +46,15 @@
             </div>
             <div class="check">
                 <ul>
-                    <li><span>处方医师：</span><img ref='doctorImg' :src="canvasdata.signpic?$https.baseURL+canvasdata.signpic:''" alt=""></li>
-                    <li v-if='canvasdata.yname_pic'><span>审核药师：</span><img ref='pharmacist' :src="$https.baseURL+canvasdata.yname_pic" alt=""></li>
+                    <li><span>处方医师：</span><img ref='doctorImg' :src="canvasdata.signpic?$https.baseURL+canvasdata.signpic:''" alt="" /></li>
+                    <li v-if='canvasdata.yname_pic'><span>审核药师：</span><img ref='pharmacist' :src="$https.baseURL+canvasdata.yname_pic" alt=""/></li>
                 </ul>
             </div>
         </div>
         </div>
+        </div>
         <div class="btn">
-            <button @click='getClick'>保存处方</button>
+            <button @click='handleClick'>保存处方</button>
         </div>
     </div>
 </template>
@@ -61,12 +64,11 @@ import html2canvas from 'html2canvas'
 export default {
     data () {
         return {
-            canvasStatus: true, // 
+            canvasStatus: true, 
             canvasdata: {},
             durg: [],
             ti: '',
             imgUrl: '',
-            isImg: false
         }
     },
     beforeCreate () {
@@ -82,17 +84,19 @@ export default {
             if (res.data.code == 1) {
                 _this.canvasdata = res.data.data
                 _this.durg = res.data.recipe_eat
-                setTimeout(function () {
+                var ts = setTimeout(function () {
                     _this.canvasImg()
+                    clearTimeout(ts)
                 }, 300)  
+            } else {
+
             }
         })
         
     
     },
   methods: {
-    
-       getClick () {   // 调取 android 与 ios
+       handleClick () {   // 调取 android 与 ios
             var u = navigator.userAgent;
             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
             var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -105,45 +109,36 @@ export default {
         },
         canvasImg () {
             var _this = this;
-            var cntElem = document.getElementById('html');
-            cntElem.style['-webkit-transform'] = 'scale(1)';
-            var shareContent = cntElem; //需要截图的包裹的（原生的）DOM 对象
-            var width = shareContent.offsetWidth ; //获取dom 宽度
-            var height = shareContent.offsetHeight; //获取dom 高度
-            var canvas = document.createElement("canvas"); //创建一个canvas节点
-            // var scale = 4; //定义任意放大倍数 支持小数
-            var scale = window.devicePixelRatio * 1;//获取设备的显示参数
-            canvas.width = width * scale; //定义canvas 宽度 * 缩放
-            canvas.height = height * scale; //定义canvas高度 *缩放
-            canvas.getContext("2d").scale(scale, scale); //获取context,设置scale 
+            var shareContent = document.getElementById('html');
+            var width = shareContent.offsetWidth ; 
+            var height = shareContent.offsetHeight; 
+            var canvas = document.createElement("canvas"); 
+            var scale = window.devicePixelRatio * 1;
+            canvas.width = width * scale; 
+            canvas.height = height * scale; 
+            canvas.getContext("2d").scale(scale, scale);
             var opts = {
                 background:null,
-                scale: scale, // 添加的scale 参数
-                canvas: canvas, //自定义 canvas
-                logging: false, //日志开关，便于查看html2canvas的内部执行流程
-                width: width, //dom 原始宽度
+                scale: scale?scale:1,
+                canvas: canvas, 
+                logging: false, 
+                width: width, 
                 height: height,
-                dpi: window.devicePixelRatio,
-                // useCORS: true // 【重要】开启跨域配置
             };
             html2canvas(shareContent, opts).then(function (canvas) {
                 var urls = canvas.toDataURL('image/png');
                 _this.imgUrl = urls
-                cntElem.style['-webkit-transform'] = 'scale(0.5)'
-                // var img = new Image()
-                // img.src = urls
-                // img.style = 'width: 100%;'
-                // cntElem.style['display'] = 'none';
-                // document.getElementById('imgsss').append(img)
-                _this.isImg = true;
+                shareContent.style['-webkit-transform'] = 'scale(0.5)'
+                shareContent.style['-webkit-transform-origin-y'] = 'top'
                 document.getElementById('canvas_box').style['background'] = '#000';
+                var box = _this.$refs.imageBox;
+                var h = window.getComputedStyle(shareContent).height;
+                h = h.replace(/px/, '');
+                box.style['height'] =  h / 2+'px';
                 _this.$indicator.close();
                 _this.canvasStatus = false
             });
-    
         }
-      
-
     },
     beforeDestroy () {
         this.$indicator.close();
@@ -168,47 +163,46 @@ export default {
     left: -200%;
 }
 
-.flex {
-    display:-webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-orient:vertical;
-    -webkit-box-direction:normal;
-    -moz-box-orient:vertical;
-    -moz-box-direction:normal;
-    flex-direction:column;
-    -webkit-flex-direction:column;
-    align-items:center;
-    -webkit-align-items:center;
-    box-align:center;
-    -moz-box-align:center;
-    -webkit-box-align:center;
-    -webkit-box-pack: center;
-    -moz-justify-content: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-}
+
 #canvas_box {
     width: 100%;
     height: 100%;
     color: #333;
     background: #fff;
+    position: relative;
+    .flex {
+        display:-webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items:center;
+        -webkit-align-items:center;
+        box-align:center;
+        -moz-box-align:center;
+        -webkit-box-align:center;
+        -webkit-box-pack: center;
+        -moz-justify-content: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+    .image-box {
+        width: 100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
     .image {
         width: 100%;
-        height: 100%;
-        overflow-y: scroll;
     }
     .html_content {
         background: #fff;
         width: 200%;
-        min-height: 100%;
         zoom: 1;
         font-size: 18px;
         padding: 20px;
         -webkit-transform-origin-x: 0;    /*定义元素被置于x轴的何处*/
-        -webkit-transform: scale(0.5);   /*定义元素被缩放*/
+        -webkit-transform: scale(1);   /*定义元素被缩放*/
+        transform: scale(1);
         .canvas_head {
             width: 100%;
             >ul {
@@ -221,7 +215,7 @@ export default {
                 
                 li {
                     width: 100%;
-                    font-size: 12px;
+                    font-size: 13px;
                     line-height: 30px;
                     letter-spacing: 1px;
                 }
@@ -229,7 +223,7 @@ export default {
         }
         h2 {
             font-size: 20px;
-            padding: 20px;
+            padding: 10px;
             text-align: center;
             letter-spacing:2px;
         }
@@ -237,8 +231,7 @@ export default {
             width: 100%;
             border-bottom:1px dashed #ccc;
             padding: 10px 0;
-           > ul {
-                            
+           > ul { 
                 display: -webkit-box;      
                 display: -moz-box;       
                 display: -ms-flexbox;
@@ -251,10 +244,22 @@ export default {
                 flex-wrap: wrap;
                 li {
                     width: 33%;
-                    height: 30px;
-                    line-height: 30px;
+                    padding: rem(4) 0;
                     letter-spacing: 1.5px;
-                    font-size: 14px;
+                    font-size: 15px;
+                }
+            }
+            .result {
+                li {
+                    width: 100%;
+                    span {
+                        display: inline-block;
+                        line-height: rem(24);
+                    }
+                    span:last-child {
+                        width: 80%;
+                        vertical-align: top;
+                    }
                 }
             }
         }
@@ -267,12 +272,12 @@ export default {
                 font-size: 14px;
             }
             >ol {
-                margin-top: 0 20px;
+                margin-top: 10px;
                 font-size: 14px;
                 // float: left;
                 li {
                     padding-left: 20px;
-                    line-height: 20px;
+                    line-height: 24px;
                     letter-spacing: 1.5px;
                     span {
                         margin-left: 16px;
@@ -301,23 +306,19 @@ export default {
             letter-spacing: 3px;
         }
         .check {
-            margin: 30px 0;
+            margin: 20px 0 10px;
             width: 100%;
             font-size: 15px;
             overflow: hidden;
-            padding-bottom: 50px;
            > ul {
                 width: 100%;
-                            
                 display: -webkit-box;      
                 display: -moz-box;       
                 display: -ms-flexbox;
                 display: -webkit-flex;
                 display: flex;
-                margin-bottom: 20px;
                 li {
                     width: 50%;
-                                
                     display: -webkit-box;      
                     display: -moz-box;       
                     display: -ms-flexbox;
@@ -334,7 +335,6 @@ export default {
                         max-width: 50px;
                         height: 30px;
                         display: block;
-                        vertical-align: bottom;
                         margin-left: 10px;
                     }
                 }
@@ -345,12 +345,15 @@ export default {
     .btn {
         width: 100%;
         text-align: center;
-        position: fixed;
-        bottom: rem(15);
+        position: absolute;
+        bottom: rem(40);
         left: 0;
+        z-index: 1000;
+        font-size: rem(16);
         > button {
             color: #fff;
-            background: rgba(255,255,255, .4);
+            // background: rgba(255,255,255, .4);
+            background-color: #999;
             padding: rem(5) rem(10);
             border-radius: rem(3);
         }

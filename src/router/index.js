@@ -12,10 +12,10 @@ const DoctorDownload = () => import(/* webpackChunkName: "chunkname2" */ "../com
 
 const ShopDetails = () => import("../components/h5/shopdetails");
 const NewShopDetails = () =>import('../components/h5/newshopdetails.vue');
-
+const RuleIntroduction = () => import('../components/detail/ruleIntroduction.vue'); // 1.8 等级规则和云币介绍
+const ExchangeDetail = () => import('../components/detail/exchangeDetail.vue');     // 1.8 兑换详情
 Vue.use(Router);
 const router = new Router({
-  // mode: "history",
   routes: [
     {
       //文章详情Details
@@ -72,6 +72,18 @@ const router = new Router({
       name: "newshopdetails",
       component: NewShopDetails
     },
+    {
+      path: '/ruleIntroduction/:tag',
+      title: '等级规则介绍',
+      name: 'ruleIntroduction',
+      component: RuleIntroduction
+    },
+    {
+      path: '/exchangeDetail/:id',
+      title: '商品兑换详情',
+      name: 'exchangeDetail',
+      component: ExchangeDetail
+    }
   ]
 });
 

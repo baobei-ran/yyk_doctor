@@ -175,9 +175,6 @@ export default {
     color: #333;
     background: #fff;
     letter-spacing: 1px;
-    position: relative;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
     .flex {
         width: 100%;
         display:-webkit-box;
@@ -357,7 +354,7 @@ export default {
         width: 100%;
         text-align: center;
         font-size: rem(16);
-        position: absolute;
+        position: fixed;
         z-index: 1000;
         left: 0;
         bottom: rem(40);

@@ -178,7 +178,7 @@ export default {
                         margin: auto;
                         background: url("../../common/img/lazy.gif") no-repeat center;
                         background-size: 20px 20px;
-                        background-color: #f9f9f9;
+                        background-color: #fff;
                     }
                     img {
                         width: 100%;

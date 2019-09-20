@@ -163,13 +163,11 @@ export default {
     left: -200%;
 }
 
-
 #canvas_box {
     width: 100%;
     height: 100%;
     color: #333;
     background: #fff;
-    position: relative;
     .flex {
         display:-webkit-box;
         display: -moz-box;
@@ -345,7 +343,7 @@ export default {
     .btn {
         width: 100%;
         text-align: center;
-        position: absolute;
+        position: fixed;
         bottom: rem(40);
         left: 0;
         z-index: 1000;

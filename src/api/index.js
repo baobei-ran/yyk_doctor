@@ -4,12 +4,15 @@ import axios from 'axios';
 // var baseURL = window.location.protocol+"//"+window.location.host; 
 // axios.defaults.baseURL = window.location.protocol + "//" + window.location.host;
 
-if (window.location.protocol === 'http:') {
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'production') {
+  var baseURL = window.location.protocol + "//" + window.location.host; 
+  axios.defaults.baseURL = window.location.protocol + "//" + window.location.host;
+} else {
   var baseURL = 'http://test99.yunyikang.cn'; // 测试
   axios.defaults.baseURL = 'http://test99.yunyikang.cn'; // 测试
-} else {
-  var baseURL = 'https://www.yunyikang.cn'; // 正式
-  axios.defaults.baseURL = 'https://www.yunyikang.cn';
+  // var baseURL = 'https://www.yunyikang.cn'; // 正式
+  // axios.defaults.baseURL = 'https://www.yunyikang.cn';
 }
 
 var http = axios.create({

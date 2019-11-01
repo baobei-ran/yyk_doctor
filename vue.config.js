@@ -76,7 +76,7 @@ module.exports = {  // production 是代表线上的意思
   devServer: {
     open: false,
     // host: "192.168.1.8",
-    host: "192.168.8.107",
+    host: "192.168.1.150",
     // host: "localhost",
     port: 8081,
     https: false,

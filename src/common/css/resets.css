@@ -53,9 +53,9 @@ ul, ol {
   list-style-type: none;
 }
 
-img {
-  pointer-events: none;
-}
+/* img {
+  pointer-events: none;  // 去掉不然 二维码 无法实现长按事件
+} */
 
 img, input {
   width: 100%;

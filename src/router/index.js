@@ -83,6 +83,19 @@ const router = new Router({
       title: '商品兑换详情',
       name: 'exchangeDetail',
       component: ExchangeDetail
+    },
+
+    {
+      path: '/docshare/:did/:flag',
+      title: '分享',
+      name: 'docshare',
+      component: () => import('../components/shareFile/docshare.vue')
+    },
+    {
+      path: '/docregister/:did/:type',
+      title: '医生注册',
+      name: 'docregister',
+      component: () => import('../components/shareFile/docregister.vue')
     }
   ]
 });

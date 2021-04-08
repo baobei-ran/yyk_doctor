@@ -1,19 +1,12 @@
 
 import axios from 'axios';
-// 动态获取 域名
-// var baseURL = window.location.protocol+"//"+window.location.host; 
-// axios.defaults.baseURL = window.location.protocol + "//" + window.location.host;
-
-console.log(process.env.NODE_ENV)
-if (process.env.NODE_ENV === 'production') {
-  var baseURL = window.location.protocol + "//" + window.location.host; 
-  axios.defaults.baseURL = window.location.protocol + "//" + window.location.host;
-} else {
-  var baseURL = 'http://test99.yunyikang.cn'; // 测试
-  axios.defaults.baseURL = 'http://test99.yunyikang.cn'; // 测试
-  // var baseURL = 'https://www.yunyikang.cn'; // 正式
-  // axios.defaults.baseURL = 'https://www.yunyikang.cn';
+var baseURL;
+if (process.env.NODE_ENV === 'production') {  // 正式
+  baseURL = 'https://www.yunyikang.cn';             
+} else {                                      // 测试
+  baseURL = 'http://test99.yunyikang.cn'; 
 }
+axios.defaults.baseURL = baseURL;
 
 var http = axios.create({
   baseURL: baseURL,
